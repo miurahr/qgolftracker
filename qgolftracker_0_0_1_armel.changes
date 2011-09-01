@@ -1,0 +1,23 @@
+Format: 1.8
+Date: Thu, 01 Sep 2011 15:48:41 +0000
+Source: qgolftracker
+Binary: qgolftracker
+Architecture: armel
+Version: 0.0.1
+Distribution: unstable
+Urgency: low
+Maintainer: unknown <>
+Changed-By: unknown <>
+Description: 
+ qgolftracker - <insert up to 60 chars description>
+Changes: 
+ qgolftracker (0.0.1) unstable; urgency=low
+ .
+   * Initial Release.
+Checksums-Sha1: 
+ 8f157ce087da7c640e38cc2d99b0e2b2861d2e07 115894 qgolftracker_0.0.1_armel.deb
+Checksums-Sha256: 
+ 27a44db5e00742aa45a79c47c670811a2c206ce5a5347caab1d40e43e94a5aa8 115894 qgolftracker_0.0.1_armel.deb
+Files: 
+ bfe80ed2354e6d8faa79b281a4961d3d 115894 user/other optional qgolftracker_0.0.1_armel.deb
+Maemo-Display-Name: qgolftracker

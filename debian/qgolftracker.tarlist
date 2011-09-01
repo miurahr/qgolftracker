@@ -1,0 +1,20 @@
+# This file is created by MADDE 'dh_fixperms'.
+# MADDE 'dpkg-deb' uses this file when creating
+# 'data.tar.gz' for debian package ar archive.
+755 root root . ./opt /
+755 root root . ./opt/qgolftracker /
+755 root root . ./opt/qgolftracker/bin /
+755 root root . ./opt/qgolftracker/bin/qgolftracker debian/qgolftracker/opt/qgolftracker/bin/qgolftracker
+755 root root . ./usr /
+755 root root . ./usr/share /
+755 root root . ./usr/share/applications /
+644 root root . ./usr/share/applications/qgolftracker.desktop debian/qgolftracker/usr/share/applications/qgolftracker.desktop
+755 root root . ./usr/share/doc /
+755 root root . ./usr/share/doc/qgolftracker /
+644 root root . ./usr/share/doc/qgolftracker/changelog.gz debian/qgolftracker/usr/share/doc/qgolftracker/changelog.gz
+644 root root . ./usr/share/doc/qgolftracker/copyright debian/qgolftracker/usr/share/doc/qgolftracker/copyright
+755 root root . ./usr/share/icons /
+755 root root . ./usr/share/icons/hicolor /
+755 root root . ./usr/share/icons/hicolor/64x64 /
+755 root root . ./usr/share/icons/hicolor/64x64/apps /
+644 root root . ./usr/share/icons/hicolor/64x64/apps/qgolftracker.png debian/qgolftracker/usr/share/icons/hicolor/64x64/apps/qgolftracker.png

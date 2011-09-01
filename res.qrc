@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/main.qml</file>
+        <file>qml/MainPage.qml</file>
+        <file>functions.js</file>
+        <file>qml/DetailsPage.qml</file>
+        <file>qml/EditClubs.qml</file>
+        <file>qml/EditCourses.qml</file>
+        <file>qml/RecPage.qml</file>
+        <file>qml/ViewPage.qml</file>
+    </qresource>
+</RCC>
