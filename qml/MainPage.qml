@@ -1,5 +1,7 @@
 import QtQuick 1.1
 import com.meego 1.0
+//import com.nokia.meego 1.0
+import com.nokia.extras 1.0
 import Qt 4.7
 
 //import QtComponents 1.0
@@ -9,6 +11,7 @@ import "../functions.js" as Funcs
 
 ///
 Page {
+    orientationLock: PageOrientation.LockPortrait
     id: mainPage
     tools: commonTools
     //var item1 = "Placeholder!"
@@ -42,9 +45,14 @@ Page {
 
     function enterrecmode() {
         if (!appWindow.coursesinitiated) {
-            console.log("There was an error opening course database, FCK!")
+            //console.log("There was an error opening course database, FCK!")
+            nocourseselected.show()
         }
+
         else{
+
+        //console.log("selected index: " + courseselection.model.get(courseselection.selectedIndex).name)
+
         appWindow.course = courseselection.model.get(courseselection.selectedIndex).name
         appWindow.courseholes = Funcs.readcourse("amount", courseselection.model.get(courseselection.selectedIndex).name,"","")
         commonTools.visible = false
@@ -60,12 +68,21 @@ Page {
             appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
         }
             else {
-            console.log("false alarm")
+            //console.log("false alarm")
 
     }
     }
 
 
+    InfoBanner {
+        id: nocourseselected
+        anchors.top: parent.top
+        anchors.topMargin: 300
+        timerEnabled: true
+        timerShowTime: 5000
+        text: "You must select a course first!"
+
+    }
 
     SelectionDialog {
         id: courseselection
@@ -97,14 +114,14 @@ Page {
             width: parent.width
             //anchors.horizontalCenter: settingsarea.horizontalCenter
             height: 100
-            font.pointSize: 60
-            text: "Golf Tracker"
+            font.pointSize: 50
+            text: "qGolfTracker"
 
         }
         Text {
             //width: 400
             font.pointSize: 32
-            text: "Select course"
+            text: "Course:"
         }
 
       Button {

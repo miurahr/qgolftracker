@@ -2,6 +2,7 @@ import QtQuick 1.1
 import com.meego 1.0
 import Qt 4.7
 import QtMobility.location 1.1
+import com.nokia.extras 1.0
 
 import "../functions.js" as Funcs
 
@@ -130,11 +131,14 @@ Page {
     }
 
     function ballpotted() {
+        //console.log("amount of hits: " + hit)
+        var hittemp = hit - 1
         hit--
+        //console.log("amount of hits now: " + hit)
         pardiff = pardiff + (-1 * (Funcs.readcourse("par",appWindow.course, hole) - hit))
         savedata("potted")
 
-        stats.text += "Hole " + hole + ": " + hit + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        stats.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
 
         if (hole < appWindow.courseholes) {
 
@@ -152,6 +156,11 @@ Page {
     function savedata(overrideclub) {
 
 
+        if (!appWindow.clubsinitiated) {
+            notification.show()
+        }
+
+        else {
         // write (lat,lon,alt,horacc,veracc,date,time,club,course,hole) {
 
         //data to be saved:
@@ -190,6 +199,14 @@ Page {
         //console.log("Will write " +club + " " + course + " " + hole + " etc to db")
         hit +=1
         undotemp = "hit"
+    }
+    }
+
+    InfoBanner {
+        id: notification
+        timerEnabled: true
+        timerShowTime: 5000
+        text: "Select club first!"
     }
 
 
@@ -269,7 +286,7 @@ Page {
         width: 400
         visible: true
         onClicked: savedata()
-        //This button saves coordinates, not implemented (yet)
+
     }
     Button {
         id: holedonebutton
