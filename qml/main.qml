@@ -5,7 +5,7 @@ import "../functions.js" as Funcs
 
 //icon: from http://www.flickr.com/photos/shimazu/5108692875/sizes/m/in/photostream/
 
-//a
+//ab
 
 PageStackWindow {
     id: appWindow
@@ -37,6 +37,34 @@ PageStackWindow {
     onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
     }
 
+
+    ToolBarLayout {
+        id: viewtools
+        visible: false
+
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: appWindow.pageStack.pop(mainPage, null, false); }
+
+        TabButton {
+            id: roundbutton
+            height: parent.height
+
+            width: 150
+            text: "By round"
+            onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
+        }
+
+        TabButton {
+            id: clubbutton
+            height: parent.height
+            width: 150
+            text: "By clubs"
+            onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewbyclubsPage.qml"))
+
+        }
+
+    }
+
     ToolBarLayout {
         id: commonTools
         visible: true
@@ -47,14 +75,14 @@ PageStackWindow {
             //anchors.right: parent===undefined ? undefined : parent.right
             //anchors.top:  parent==undefined ? undefined : parent.top
         TabButton {
-            text: "View"
+            text: "View trackings"
             height: parent.height
-            width: parent.width / 3
+            width: 400
             //iconSource: "toolbar-mediacontrol-play"
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
 
         }
-        TabButton {
+        /*TabButton {
             text: "Home"
            height: parent.height
            width: parent.width / 3
@@ -63,7 +91,7 @@ PageStackWindow {
             //iconSource: "toolbar-back"
             onClicked: appWindow.pageStack.pop(mainPage, null, false)
 
-        }
+        }*/
         ToolIcon { platformIconId: "toolbar-view-menu";
              //anchors.right: parent===undefined ? undefined : parent.right
              onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close()

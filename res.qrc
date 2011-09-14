@@ -8,5 +8,6 @@
         <file>qml/EditCourses.qml</file>
         <file>qml/RecPage.qml</file>
         <file>qml/ViewPage.qml</file>
+        <file>qml/ViewbyclubsPage.qml</file>
     </qresource>
 </RCC>

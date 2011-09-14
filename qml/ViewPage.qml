@@ -7,9 +7,11 @@ import "../functions.js" as Functions
 //import "../functions.js" as Functions
 Page {
     id: viewPage
-    tools: commonTools
+    tools: viewtools
     width: parent.width
     height: parent.height
+
+    orientationLock: PageOrientation.LockPortrait
 
     Component.onCompleted: update()
 
@@ -30,25 +32,50 @@ Page {
 
 
         Component {
+            id: delegatetitle
+
+            Item {
+            width: parent.width
+            height: 50
+            Rectangle {
+             width: parent.width
+             height: parent.height
+             color: "gray"
+
+
+            Text {
+                font.pointSize: 32
+                color: "white"
+                text: section
+
+            }
+            }
+            }
+        }
+
+        Component {
             id: delegatestuff
 
             Item {
                 id: wrapper
                 height: 100
+                width: parent.width
+
+
 
                 Column {
                     Text {
                         font.pointSize: 20
-                        text: date
+                        text: "Date: " + date
                     }
-                    Text {
+                    /*Text {
                         font.pointSize: 20
                         text: time
-                    }
+                    }*/
 
                     Text {
-                        font.pointSize: 40
-                        text: name
+                        font.pointSize: 30
+                        text: "Course: " + name
 
                     MouseArea {
                         anchors.fill:  parent
@@ -75,20 +102,10 @@ Page {
             //onCurrentIndexChanged: open()
 
             section.property: "id"
+            section.delegate: delegatetitle
 
             delegate: delegatestuff
-             //   Rectangle {
-                //Button {
-                //font.pointSize: 20
-                //text: name
-                //onClicked:console.log(playbackmodel.objectName)
-           //}
-            /*    Text {
-                    font.pointSize: 50
-                    text: date + "\n" + name
-               // }
 
-            }*/
 
         }
 
@@ -102,17 +119,12 @@ Page {
 
 
     function update() {
-        //console.log("Update called from functions.js!")
+        roundbutton.enabled = false
+        clubbutton.enabled = true
+
 
         Functions.read(3)
 
-        //only for debugging!
-        //Functions.read(4)
 
-        //Functions.read("3")
-        //a += Functions.read()
-        //a += Functions.read()
-        //console.log(a)
-        //textArea.text = a
     }
 }

@@ -199,6 +199,7 @@ var r = ""
                                         for (var i=0; i<populate.rows.length; i++){
 
 
+
                                         playbackmodel.append({name: populate.rows.item(i).course,
                                                              date: populate.rows.item(i).date,
                                                              id: populate.rows.item(i).sessionid,
@@ -294,12 +295,24 @@ function readclub(number) {
         else {
     cdb1.transaction(
                 function(tx) {
-                    var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
+
+                        //var all = tx.executeSql('SELECT club FROM clubs')
+                        //console.log("amount: " + all.rows.length)
+
+                        var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
+
+                    //var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
                     //var clubsname = ""
+                        //console.log("length: " + clubname.rows.length)
+                        //console.log("nimi: " + clubname.rows.item(0).club)
 
-
+                        if (clubname.rows.length != 0) {
                         clubsname += clubname.rows.item(0).club
+                        }
 
+                        else {
+                        clubsname += "empty"
+                        }
                 }
                     )
     //console.log("Clubsname is before return: " + clubsname)
@@ -756,6 +769,25 @@ function removecourse(name) {
                 function(tx) {
                     try{
                         var hcp = tx.executeSql('DELETE FROM courses WHERE coursename="' + name +'"')
+                    }
+
+                    catch(e) {
+                        console.log("error: " +e)
+    }
+}
+                )
+
+
+}
+
+function removeclub(id) {
+
+    var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+
+    cdb.transaction(
+                function(tx) {
+                    try{
+                        var hcp = tx.executeSql('DELETE FROM clubs WHERE idnumber="' + id +'"')
                     }
 
                     catch(e) {

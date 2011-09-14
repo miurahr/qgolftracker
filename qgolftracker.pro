@@ -42,7 +42,8 @@ OTHER_FILES += \
     qml/RecPage.qml \
     qml/EditCourses.qml \
     qml/EditClubs.qml \
-    qml/DetailsPage.qml
+    qml/DetailsPage.qml \
+    qml/ViewbyclubsPage.qml
 
 RESOURCES += \
     res.qrc
@@ -55,3 +56,6 @@ qtcAddDeployment()
 CONFIG += qdeclarative-boostable
 QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
+
+
+
