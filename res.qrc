@@ -9,5 +9,6 @@
         <file>qml/RecPage.qml</file>
         <file>qml/ViewPage.qml</file>
         <file>qml/ViewbyclubsPage.qml</file>
+        <file>qml/ViewMapPage.qml</file>
     </qresource>
 </RCC>

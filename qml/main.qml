@@ -49,15 +49,23 @@ PageStackWindow {
             id: roundbutton
             height: parent.height
 
-            width: 150
+            width: 120
             text: "By round"
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
         }
 
         TabButton {
+            id: mapbutton
+            height: parent.height
+            width: 120
+            text: "On map"
+            onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
+        }
+
+        TabButton {
             id: clubbutton
             height: parent.height
-            width: 150
+            width: 120
             text: "By clubs"
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewbyclubsPage.qml"))
 

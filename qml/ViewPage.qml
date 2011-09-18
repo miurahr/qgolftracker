@@ -121,6 +121,7 @@ Page {
     function update() {
         roundbutton.enabled = false
         clubbutton.enabled = true
+        mapbutton.enabled = true
 
 
         Functions.read(3)
