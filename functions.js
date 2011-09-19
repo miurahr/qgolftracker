@@ -699,6 +699,66 @@ function populatedetails(){
 
 }
 
+function populatemap() {
+
+    /*
+      We need:
+      -hole
+      (-hit #)
+      -club
+      -distance
+      -position
+      (-date + time?)
+
+
+      */
+    var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+    //console.log(getdistance(61, 40, 50, 55))
+
+    cdb.transaction(
+                function(tx) {
+                    var tmp = tx.executeSql('SELECT * FROM gore WHERE sessionid=' + appWindow.sessionidtemp)
+
+                    for (var i=0; i < tmp.rows.length; i++) {
+                        var two = i + 1
+                        var latid1 = tmp.rows.item(i).latitude
+                        var longit1 = tmp.rows.item(i).longitude
+                        if (i < tmp.rows.length -1) {
+                        var latid2 = tmp.rows.item(two).latitude
+                        var longit2 = tmp.rows.item(two).longitude
+                        }
+
+                        if (i==0) {
+                            map.center({latitude: latid1, longitude: longit1})
+                        } //Does this work at all?!?
+
+
+                        polyline.addCoordinate({latitude: latid1, longitude: longit1})
+                        //DOES IT WORK LIKE THIS?!?
+
+                        //console.log("distance: " +getdistance(latid1, longit1, latid2, longit2))
+                        //var hitfetch = tx.executeSql('SELECT * FROM gore WHERE hole=')
+                        /*detailModel.append({ hole: tmp.rows.item(i).hole,
+                                           hit: tmp.rows.item(i).hit,
+                                           club: tmp.rows.item(i).club,
+                                           distance: getdistance(latid1, longit1, latid2, longit2)})
+                        */
+                        /*if (tmp.rows.item(i).club != "potted"){
+                        detailModel.append({ hole: tmp.rows.item(i).hole,
+                                           club: tmp.rows.item(i).club,
+                                           distance: getdistance(latid1, longit1, latid2, longit2),
+                                           hit: 69})
+                        }*/
+}
+                }
+    )
+    //detailModel.append({ })
+
+}
+
+
+
+
 function getdistance(lat1, lon1, lat2, lon2) {
 
     //thanks for the equations, http://www.movable-type.co.uk/scripts/latlong.html !

@@ -6,6 +6,8 @@ import com.meego 1.0
 import "../functions.js" as Functions
 //import "../functions.js" as Functions
 Page {
+
+
     id: viewPage
     tools: viewtools
     width: parent.width
@@ -15,12 +17,105 @@ Page {
 
     Component.onCompleted: update()
 
-    function open(indx) {
+    function open(indx, mode) {
 
         appWindow.sessionidtemp = playbackmodel.get(indx).id
-        appWindow.pageStack.push(Qt.resolvedUrl("DetailsPage.qml"))
+        opendialog.open()
+
 
     }
+
+    function inmap() {
+        appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
+        opendialog.accept()
+    }
+
+    function aslist() {
+        appWindow.pageStack.push(Qt.resolvedUrl("DetailsPage.qml"))
+        opendialog.accept()
+    }
+
+
+    Dialog {
+        id: opendialog
+        //onAccepted: createcourse(coursename.text, hleamount.value)
+        //onRejected: cancelled()
+        content: Item {
+            id: dialogitem
+            //height: parent.height - 150
+            height: 300
+            width: parent.width
+            anchors.topMargin: 200
+            Column {
+                spacing: 10
+
+
+            Text {
+                font.pointSize: 20
+                text: "Select how you want to view stats"
+            }
+
+            Button {
+                text: "Open in map"
+                onClicked: inmap()
+            }
+
+            Button {
+                text: "Open as list"
+                onClicked: aslist()
+            }
+
+            }
+            /*
+            TextInput {
+                id: coursename
+                color: "White"
+                height: 150
+                width: 400
+                font.pointSize: 20
+                onAccepted:coursename.closeSoftwareInputPanel
+                text: "Name of the course"
+                //onFocusChanged: coursename.closeSoftwareInputPanel
+                selectByMouse: true
+                cursorVisible: true
+                //coursename.
+            }
+            //}
+            Text {
+                id: explan
+                //anchors.top: coursename.bottom
+                //anchors.topMargin: 50
+                //width: parent.width
+                height: 25
+                color: "White"
+                //anchors.top: coursename.bottom
+                //anchors.topMargin: 50
+                font.pointSize: 15
+                text: "Amount of holes :" + hleamount.value
+            }
+            Slider {
+                id: hleamount
+                //anchors.top:  explan.bottom
+                //anchors.topMargin: 10
+                height: 50
+                width: parent.width -150
+                //anchors.centerIn: parent.horizontalCenter
+                //anchors.top: explan.bottom
+                //anchors.bottomMargin: 50
+                minimumValue: 9
+                maximumValue:  36
+                stepSize: 9
+                valueIndicatorVisible: true
+
+            }*/
+
+
+}
+        //}
+
+
+    }
+
 
     Item {
         anchors.fill: parent
@@ -121,7 +216,7 @@ Page {
     function update() {
         roundbutton.enabled = false
         clubbutton.enabled = true
-        mapbutton.enabled = true
+        //mapbutton.enabled = true
 
 
         Functions.read(3)

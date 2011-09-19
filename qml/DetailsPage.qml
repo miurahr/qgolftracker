@@ -9,8 +9,7 @@ import "../functions.js" as Funcs
 Page {
     id: detailspage
     orientationLock: PageOrientation.LockPortrait
-    tools: commonTools
-
+    tools: viewtools
 
     Component.onCompleted: Funcs.populatedetails()
 
