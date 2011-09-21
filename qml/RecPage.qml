@@ -1,7 +1,7 @@
 import QtQuick 1.1
 import com.meego 1.0
 import Qt 4.7
-import QtMobility.location 1.1
+import QtMobility.location 1.2
 import com.nokia.extras 1.0
 
 import "../functions.js" as Funcs
@@ -39,8 +39,68 @@ Page {
         appWindow.pageStack.pop(mainPage, null, false)
     }
 
+    function undo() {
+        console.log("This will be undoed: " + undotemp)
+        //this can be either pot or hit
+        if (undotemp === "pot") {
+            //decrease hole
+            //how in heavens name I can figure out amount of hits already hit?!??!?
+        }
+        if (undotemp === "hit") {
+            //decrease hit
+        }
+
+        // delete last row from db!
+    }
 
 
+    Rectangle {
+        z:-1
+        id: gpsnotokbottom
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        color: "red"
+        //visible: !gpsswitch.checked
+        /*Text {
+           text: "waiting for fix
+        }*/
+    }
+
+
+    Rectangle {
+        z:0
+        id: gpsnotok
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        color: "red"
+        visible: !gpsswitch.checked
+        /*Text {
+           text: "waiting for fix
+        }*/
+    }
+
+    Rectangle {
+        z:-1
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        id: gpsok
+        color: "green"
+        visible: positionSource.position.latitudeValid
+        Text {
+            font.pointSize: 16
+            anchors.top: parent.top
+            //anchors.topMargin: 50
+            anchors.right: parent.right
+            width: 100
+            text: "Accuracy: \n" + Math.round(positionSource.position.horizontalAccuracy) + " m"
+        }
+    }
 
     QueryDialog {
         id: rusuredialog
@@ -50,6 +110,18 @@ Page {
         titleText: "Are you sure?"
         onAccepted: returntomain()
         onRejected: console.log("abort aborted")
+
+    }
+
+
+    QueryDialog {
+        id: undodialog
+        acceptButtonText: "OK"
+        message: "Are you sure you want to undo last action?"
+        rejectButtonText: "Cancel"
+        titleText: "Undo?"
+        onAccepted: undo()
+        //onRejected: do not undo!
 
     }
 
@@ -117,7 +189,7 @@ Page {
         //active: false
         active: gpsswitch.checked
     }
-
+/*
     function printableMethod(method) {
         if (method == PositionSource.SatellitePositioningMethod)
             return "Satellite";
@@ -129,7 +201,7 @@ Page {
             return "All/multiple"
         return "source error";
     }
-
+*/
     function ballpotted() {
         //console.log("amount of hits: " + hit)
         var hittemp = hit - 1
@@ -215,6 +287,7 @@ Page {
         anchors.top: parent.top
         anchors.left:  parent.left
         width:  parent.width
+        height: 100
         anchors.leftMargin: parent.width / 4
 
         Text {
@@ -230,6 +303,7 @@ Page {
             id: gpsswitch
             width: 100
             checked: true
+
             //anchors.left: switchtext.right
             //anchors.leftMargin: 50
 
@@ -299,7 +373,7 @@ Page {
         id: undobutton
         width: 150
         text: "UNDO"
-        onClicked:  console.log("This will be undoed: " + undotemp)
+        onClicked:  undodialog.open()
         //hit count -1, remove last row etc?
     }
 

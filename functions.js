@@ -712,6 +712,7 @@ function populatemap() {
 
 
       */
+    console.log("populating map")
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     //console.log(getdistance(61, 40, 50, 55))
 
@@ -720,20 +721,47 @@ function populatemap() {
                     var tmp = tx.executeSql('SELECT * FROM gore WHERE sessionid=' + appWindow.sessionidtemp)
 
                     for (var i=0; i < tmp.rows.length; i++) {
+                        console.log("does this work?!?")
                         var two = i + 1
                         var latid1 = tmp.rows.item(i).latitude
                         var longit1 = tmp.rows.item(i).longitude
-                        if (i < tmp.rows.length -1) {
+                        /*if (i < tmp.rows.length -1) {
                         var latid2 = tmp.rows.item(two).latitude
                         var longit2 = tmp.rows.item(two).longitude
-                        }
+                        }*/
+
+                        var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
+                        //console.log("creationstring: " + creationstring)
+                        var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamic"+i)
 
                         if (i==0) {
-                            map.center({latitude: latid1, longitude: longit1})
+
+                            map.center = coord
+
+                            //add new circle to map
+                            console.log("trying to add a circle")
+
+                            creationstring = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: ' + coord + '; color:"blue"; radius:1000}'
+                            console.log("creationstring: " + creationstring)
+                            var newcircle = Qt.createQmlObject(creationstring,viewMapPage, "dynamicSnippet"+i);
+                            map.addMapObject(newcircle)
+                            console.log("circle probably added")
+
                         } //Does this work at all?!?
 
+                        console.log("adding polyline to " + latid1 + ", " + longit1)
 
-                        polyline.addCoordinate({latitude: latid1, longitude: longit1})
+                        //polyline.addCoordinate({latitude: latid1, longitude: longit1})
+                        polyline.addCoordinate(coord)
+
+                        /*console.log("trying to add a circle")
+                        var newcircle = Qt.createQmlObject('import QtQuick 1.0; import QtMobility.location 1.2; MapCircle {;center: Coordinate {; latitude:' + latid1 +';longitude:' +longit1 +'};color:"blue";radius:1000;',viewMapPage, "dynamicSnippet1");
+                        viewMapPage.map.addMapObject(newcircle)
+                        console.log("circle probably added")
+
+                        */
+
+
                         //DOES IT WORK LIKE THIS?!?
 
                         //console.log("distance: " +getdistance(latid1, longit1, latid2, longit2))

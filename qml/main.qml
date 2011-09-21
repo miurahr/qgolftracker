@@ -5,7 +5,7 @@ import "../functions.js" as Funcs
 
 //icon: from http://www.flickr.com/photos/shimazu/5108692875/sizes/m/in/photostream/
 
-//ab
+//abcdefghijklmnopqr
 
 PageStackWindow {
     id: appWindow
@@ -25,8 +25,6 @@ PageStackWindow {
     MainPage {id: mainPage}
 
 
-
-    //
 
     function courseedit() {
     coursesinitiated = false
@@ -54,13 +52,6 @@ PageStackWindow {
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
         }
 
-        /*TabButton {
-            id: mapbutton
-            height: parent.height
-            width: 120
-            text: "On map"
-            onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
-        }*/
 
         TabButton {
             id: clubbutton
@@ -77,11 +68,7 @@ PageStackWindow {
         id: commonTools
         visible: true
 
-        //ToolButtonRow {
-           // id: toolrow
-           // width: parent.width
-            //anchors.right: parent===undefined ? undefined : parent.right
-            //anchors.top:  parent==undefined ? undefined : parent.top
+
         TabButton {
             text: "View trackings"
             height: parent.height
@@ -90,16 +77,7 @@ PageStackWindow {
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
 
         }
-        /*TabButton {
-            text: "Home"
-           height: parent.height
-           width: parent.width / 3
 
-            //pressed: true
-            //iconSource: "toolbar-back"
-            onClicked: appWindow.pageStack.pop(mainPage, null, false)
-
-        }*/
         ToolIcon { platformIconId: "toolbar-view-menu";
              //anchors.right: parent===undefined ? undefined : parent.right
              onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close()
@@ -121,7 +99,7 @@ PageStackWindow {
             MenuItem {
                 text: "Edit courses"
                 onClicked: courseedit()
-                //onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
+
             }
             MenuItem {
                 text: "Delete all data!"
