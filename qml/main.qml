@@ -5,7 +5,7 @@ import "../functions.js" as Funcs
 
 //icon: from http://www.flickr.com/photos/shimazu/5108692875/sizes/m/in/photostream/
 
-//abcdefghijklmnopqr
+//abcd
 
 PageStackWindow {
     id: appWindow
@@ -73,13 +73,11 @@ PageStackWindow {
             text: "View trackings"
             height: parent.height
             width: 400
-            //iconSource: "toolbar-mediacontrol-play"
             onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
 
         }
 
         ToolIcon { platformIconId: "toolbar-view-menu";
-             //anchors.right: parent===undefined ? undefined : parent.right
              onClicked: (myMenu.status == DialogStatus.Closed) ? myMenu.open() : myMenu.close()
 
 
@@ -93,7 +91,6 @@ PageStackWindow {
         MenuLayout {
             MenuItem {
                 text: "Edit clubs"
-                //onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
                 onClicked: clubedit()
             }
             MenuItem {

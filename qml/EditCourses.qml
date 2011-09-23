@@ -148,6 +148,8 @@ Page {
             //Funcs.writecourse()
         }
         repopulatecourses()
+        tumblerwidget.visible=false
+        //instead of this the dialog should be updated to the latest entry!
     }
 
 

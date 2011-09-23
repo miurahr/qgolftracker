@@ -19,6 +19,15 @@ Page {
     property bool populated
     populated: {false}
 
+    //background
+
+    Rectangle {
+        id: background
+        width: parent.width
+        height: parent.height
+        z:0
+        color: "white"
+    }
 
 
     function reinitmodel() {

@@ -195,7 +195,36 @@ var r = ""
 
                         db.transaction(
                                     function(rx) {
+
+
+                                        try {
+                                            rx.executeSql('SELECT sessionid, course, date, time FROM gore GROUP BY sessionid')
+                                        }
+                                        catch(e) {
+                                            console.log("error was: " + e)
+                                            var date = Qt.formatDate(new Date(), "ddMMyy")
+                                            var time = Qt.formatTime(new Date(), "hhmm")
+
+                                            playbackmodel.append({name: "No records found",
+                                                                     date: date,
+                                                                     id:1,
+                                                                     time: time})
+                                            norecords = true
+
+                                            return
+                                        }
+
                                         var populate = rx.executeSql('SELECT sessionid, course, date, time FROM gore GROUP BY sessionid')
+
+
+                                        if(populate.rows.length < 1) {
+                                                playbackmodel.append({name: "No records found",
+                                                                         date: 000000,
+                                                                         id:0,
+                                                                         time: 0000})
+
+                                        }
+
                                         for (var i=0; i<populate.rows.length; i++){
 
 
@@ -469,7 +498,7 @@ function readcourse(action, arg1, arg2, arg3) {
         var coursenametemp = ""
         cdb2.transaction(
                     function(tx) {
-                        /* THIS DOESN'T WORK AT ALL!
+
                         try {
                             console.log("trying name")
                             tx.executeSql('SELECT coursename FROM courses GROUP BY coursename')
@@ -483,7 +512,7 @@ function readcourse(action, arg1, arg2, arg3) {
 
                             }
 
-                        }*/
+                        }
 
 
 

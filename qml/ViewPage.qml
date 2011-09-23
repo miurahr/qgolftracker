@@ -1,14 +1,13 @@
 import QtQuick 1.0
-//import QtQuick 1.1
 import com.meego 1.0
-//import Qt 4.7
-//import QtMobility.location 1.1
 import "../functions.js" as Functions
-//import "../functions.js" as Functions
+
+
+
 Page {
-
-
     id: viewPage
+    property bool norecords
+    norecords:{ "false"}
     tools: viewtools
     width: parent.width
     height: parent.height
@@ -18,10 +17,13 @@ Page {
     Component.onCompleted: update()
 
     function open(indx, mode) {
-
+        if (norecords) {
+            console.log("nothing")
+        }
+        else {
         appWindow.sessionidtemp = playbackmodel.get(indx).id
         opendialog.open()
-
+        }
 
     }
 
@@ -38,8 +40,6 @@ Page {
 
     Dialog {
         id: opendialog
-        //onAccepted: createcourse(coursename.text, hleamount.value)
-        //onRejected: cancelled()
         content: Item {
             id: dialogitem
             //height: parent.height - 150
@@ -52,7 +52,8 @@ Page {
 
             Text {
                 font.pointSize: 20
-                text: "Select how you want to view stats"
+                color:"white"
+                text: "How you want to view stats?"
             }
 
             Button {
@@ -66,52 +67,10 @@ Page {
             }
 
             }
-            /*
-            TextInput {
-                id: coursename
-                color: "White"
-                height: 150
-                width: 400
-                font.pointSize: 20
-                onAccepted:coursename.closeSoftwareInputPanel
-                text: "Name of the course"
-                //onFocusChanged: coursename.closeSoftwareInputPanel
-                selectByMouse: true
-                cursorVisible: true
-                //coursename.
-            }
-            //}
-            Text {
-                id: explan
-                //anchors.top: coursename.bottom
-                //anchors.topMargin: 50
-                //width: parent.width
-                height: 25
-                color: "White"
-                //anchors.top: coursename.bottom
-                //anchors.topMargin: 50
-                font.pointSize: 15
-                text: "Amount of holes :" + hleamount.value
-            }
-            Slider {
-                id: hleamount
-                //anchors.top:  explan.bottom
-                //anchors.topMargin: 10
-                height: 50
-                width: parent.width -150
-                //anchors.centerIn: parent.horizontalCenter
-                //anchors.top: explan.bottom
-                //anchors.bottomMargin: 50
-                minimumValue: 9
-                maximumValue:  36
-                stepSize: 9
-                valueIndicatorVisible: true
 
-            }*/
 
 
 }
-        //}
 
 
     }
@@ -163,14 +122,10 @@ Page {
                         font.pointSize: 20
                         text: "Date: " + date
                     }
-                    /*Text {
-                        font.pointSize: 20
-                        text: time
-                    }*/
 
                     Text {
                         font.pointSize: 30
-                        text: "Course: " + name
+                        text: name
 
                     MouseArea {
                         anchors.fill:  parent
@@ -194,8 +149,6 @@ Page {
             anchors.fill:  parent
             model: playbackmodel
             focus: true
-            //onCurrentIndexChanged: open()
-
             section.property: "id"
             section.delegate: delegatetitle
 

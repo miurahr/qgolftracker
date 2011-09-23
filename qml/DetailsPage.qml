@@ -1,7 +1,6 @@
 import QtQuick 1.0
 
 import com.meego 1.0
-//import Qt 4.7
 
 import "../functions.js" as Funcs
 
@@ -52,7 +51,7 @@ Page {
                     }
                     Text {
                         font.pointSize: 25
-                        text: distance + "m"
+                        text: Math.round(distance) + "m"
                     }
                     }
                 }
@@ -74,8 +73,31 @@ Page {
             model: detailModel
             focus: true
             section.property: "hole"
+            section.delegate: holedelegate
 
             delegate: delegatestuff2
+
+        }
+
+        Component {
+            id: holedelegate
+            Item {
+            width: parent.width
+            height: 50
+            Rectangle {
+             width: parent.width
+             height: parent.height
+             color: "gray"
+
+
+            Text {
+                font.pointSize: 32
+                color: "white"
+                text: section
+
+            }
+            }
+            }
 
         }
 
