@@ -884,7 +884,7 @@ function getpar(course, numbr) {
 }
 
 function removeround(id) {
-    id ++
+    //id ++
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(
@@ -951,5 +951,43 @@ function removeclub(id) {
 }
                 )
 
+
+}
+
+function removelastrow() {
+
+    var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+
+    cdb.transaction(
+                function(tx) {
+                    try{
+                        console.log("trying to remove last row")
+                        tx.executeSql('DELETE FROM gore WHERE id= (SELECT MAX(id) FROM gore limit 1)')
+                    }
+
+                    catch(e) {
+                        console.log("removelastrow error: " +e)
+    }
+}
+                )
+
+}
+
+function removelastround() {
+
+    var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+    cdb.transaction(
+                function(tx) {
+                    try{
+                        tx.executeSql('DELETE FROM gore WHERE sessionid = (SELECT MAX(sessionid) FROM gore limit 1)')
+
+                    }
+
+                    catch(e) {
+                        console.log("Funcs removelastround SQL error: " +e)
+    }
+                    }
+
+                )
 
 }

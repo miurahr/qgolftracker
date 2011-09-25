@@ -45,6 +45,7 @@ Page {
     }
 
     function delround() {
+        indextemp++
         Funcs.removeround(indextemp)
         //clear entries½!!!
         playbackmodel.clear()

@@ -214,7 +214,7 @@ Page {
                 //anchors.top: explan.bottom
                 //anchors.bottomMargin: 50
                 minimumValue: 9
-                maximumValue:  36
+                maximumValue:  18
                 stepSize: 9
                 valueIndicatorVisible: true
 

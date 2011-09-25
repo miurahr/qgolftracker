@@ -15,12 +15,19 @@ Page {
     property int hole:  1
     property int hit: 1
     property int pardiff:  0
-    property string undotemp:  ""
+    property string undotemp
     property string session
-
+    property string lastholehits
+    orientationLock: PageOrientation.LockPortrait
 
     //init clubs
     Component.onCompleted: pageloaded()
+
+
+    function abort() {
+        Funcs.removelastround()
+        returntomain()
+    }
 
     function pageloaded() {
         Funcs.populateclubs()
@@ -43,123 +50,22 @@ Page {
         console.log("This will be undoed: " + undotemp)
         //this can be either pot or hit
         if (undotemp === "pot") {
+            hole --
+            hit = lastholehits
             //decrease hole
             //how in heavens name I can figure out amount of hits already hit?!??!?
         }
         if (undotemp === "hit") {
+            hit --
             //decrease hit
         }
 
+
+        Funcs.removelastrow()
         // delete last row from db!
     }
 
 
-    Rectangle {
-        z:-1
-        id: gpsnotokbottom
-        anchors.left: parent.left
-        anchors.top: parent.top
-        width: parent.width
-        height: 50
-        color: "red"
-        //visible: !gpsswitch.checked
-        /*Text {
-           text: "waiting for fix
-        }*/
-    }
-
-
-    Rectangle {
-        z:0
-        id: gpsnotok
-        anchors.left: parent.left
-        anchors.top: parent.top
-        width: parent.width
-        height: 50
-        color: "red"
-        visible: !gpsswitch.checked
-        /*Text {
-           text: "waiting for fix
-        }*/
-    }
-
-    Rectangle {
-        z:-1
-        anchors.left: parent.left
-        anchors.top: parent.top
-        width: parent.width
-        height: 50
-        id: gpsok
-        color: "green"
-        visible: positionSource.position.latitudeValid
-        Text {
-            font.pointSize: 16
-            anchors.top: parent.top
-            //anchors.topMargin: 50
-            anchors.right: parent.right
-            width: 100
-            text: "Accuracy: \n" + Math.round(positionSource.position.horizontalAccuracy) + " m"
-        }
-    }
-
-    QueryDialog {
-        id: rusuredialog
-        acceptButtonText: "OK"
-        message: "This will erase all the progress if you press ok"
-        rejectButtonText: "Cancel"
-        titleText: "Are you sure?"
-        onAccepted: returntomain()
-        onRejected: console.log("abort aborted")
-
-    }
-
-
-    QueryDialog {
-        id: undodialog
-        acceptButtonText: "OK"
-        message: "Are you sure you want to undo last action?"
-        rejectButtonText: "Cancel"
-        titleText: "Undo?"
-        onAccepted: undo()
-        //onRejected: do not undo!
-
-    }
-
-    Dialog {
-        id: summarydialog
-        onAccepted: returntomain()
-        onRejected: returntomain()
-        title:
-            Text {
-            id: sdtitle
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 40
-            height:100
-            color:"White"
-            text: "Summary:"
-        }
-
-
-        content:
-         Text {
-             font.pointSize: 20
-
-             anchors.horizontalCenter: parent.horizontalCenter
-             color:"White"
-             height: 300
-             text: stats.text
-
-         }
-
-
-        buttons: Button {
-            //anchors.top : textpart.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: "OK"
-            onClicked: summarydialog.accept()
-
-        }
-}
 
 
     //club selection dialog
@@ -168,49 +74,21 @@ Page {
         clubselection.open()
 }
 
-    SelectionDialog {
-        id: clubselection
-        titleText: "Select club"
-        selectedIndex: 0
-          model: ListModel {
-               id: clubModel
-
-
-        }
-}
-
-    //init GPS etc
-
-
-
-    PositionSource {
-        id: positionSource
-        updateInterval: 1000
-        //active: false
-        active: gpsswitch.checked
-    }
-/*
-    function printableMethod(method) {
-        if (method == PositionSource.SatellitePositioningMethod)
-            return "Satellite";
-        else if (method == PositionSource.NoPositioningMethod)
-            return "Not available";
-        else if (method == PositionSouce.NonSatellitePositioningMethod)
-            return "Non-satellite";
-        else if (method == PositionSource.AllPositioningMethods)
-            return "All/multiple"
-        return "source error";
-    }
-*/
     function ballpotted() {
         //console.log("amount of hits: " + hit)
         var hittemp = hit - 1
         hit--
+        lastholehits = hit
+        console.log("lastholehits: " + lastholehits)
         //console.log("amount of hits now: " + hit)
         pardiff = pardiff + (-1 * (Funcs.readcourse("par",appWindow.course, hole) - hit))
         savedata("potted")
-
-        stats.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        if (hole < 10) {
+        stats1.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        }
+        else {
+        stats2.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        }
 
         if (hole < appWindow.courseholes) {
 
@@ -274,6 +152,169 @@ Page {
     }
     }
 
+
+
+    Rectangle {
+        z:-1
+        id: gpsnotokbottom
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        color: "red"
+        //visible: !gpsswitch.checked
+        /*Text {
+           text: "waiting for fix
+        }*/
+    }
+
+
+    Rectangle {
+        z:0
+        id: gpsnotok
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        color: "red"
+        visible: !gpsswitch.checked
+        /*Text {
+           text: "waiting for fix
+        }*/
+    }
+
+    Rectangle {
+        z:-1
+        anchors.left: parent.left
+        anchors.top: parent.top
+        width: parent.width
+        height: 50
+        id: gpsok
+        color: "green"
+        visible: positionSource.position.latitudeValid
+        Text {
+            font.pointSize: 16
+            anchors.top: parent.top
+            //anchors.topMargin: 50
+            anchors.right: parent.right
+            width: 100
+            text: "Accuracy: \n" + Math.round(positionSource.position.horizontalAccuracy) + " m"
+        }
+    }
+
+    QueryDialog {
+        id: rusuredialog
+        acceptButtonText: "OK"
+        message: "This will erase all the progress if you press ok"
+        rejectButtonText: "Cancel"
+        titleText: "Are you sure?"
+        onAccepted: abort()
+        onRejected: console.log("abort aborted")
+
+    }
+
+
+    QueryDialog {
+        id: undodialog
+        acceptButtonText: "OK"
+        message: "Are you sure you want to undo last action?"
+        rejectButtonText: "Cancel"
+        titleText: "Undo?"
+        onAccepted: undo()
+        //onRejected: do not undo!
+
+    }
+
+    Dialog {
+        id: summarydialog
+        onAccepted: returntomain()
+        onRejected: returntomain()
+        title:
+            Text {
+            id: sdtitle
+            anchors.horizontalCenter: parent.horizontalCenter
+            font.pointSize: 40
+            height:100
+            color:"White"
+            text: "Summary:"
+        }
+
+
+        content:
+         Rectangle {
+            color: "black"
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: 300
+            Text {
+                id: front9
+                font.pointSize: 20
+                anchors.left: parent.left
+                anchors.top: parent.top
+                width: parent.width/2
+                height: parent.height
+             color:"White"
+
+             text: stats1.text
+
+         }
+            Text {
+                font.pointSize: 20
+                anchors.left: front9.right
+                anchors.top: parent.top
+                width: parent.width / 2
+                height: parent.height
+                text: stats2.text
+            }
+        }
+
+
+
+        buttons: Button {
+            //anchors.top : textpart.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "OK"
+            onClicked: summarydialog.accept()
+
+        }
+}
+
+
+    SelectionDialog {
+        id: clubselection
+        titleText: "Select club"
+        selectedIndex: 0
+          model: ListModel {
+               id: clubModel
+
+
+        }
+}
+
+    //init GPS etc
+
+
+
+    PositionSource {
+        id: positionSource
+        updateInterval: 1000
+        //active: false
+        active: gpsswitch.checked
+    }
+/*
+    function printableMethod(method) {
+        if (method == PositionSource.SatellitePositioningMethod)
+            return "Satellite";
+        else if (method == PositionSource.NoPositioningMethod)
+            return "Not available";
+        else if (method == PositionSouce.NonSatellitePositioningMethod)
+            return "Non-satellite";
+        else if (method == PositionSource.AllPositioningMethods)
+            return "All/multiple"
+        return "source error";
+    }
+*/
+
+
     InfoBanner {
         id: notification
         timerEnabled: true
@@ -311,7 +352,7 @@ Page {
          }
     }
 
-    Flow {
+    /*Flow {
         //LeftToRight: true
         width: mainPage.width
         id: buttonarea
@@ -322,29 +363,48 @@ Page {
         //anchors.left:  parent.left
         spacing: 20
         //Comboboxes for selecting stuff
-        // Switch for power saving: toggle gps on/off
+        // Switch for power saving: toggle gps on/off*/
+
+        Column {
+            id: info
+            width: parent.width
+            anchors.top: gpsstatusswitchrow.bottom
+            anchors.left: parent.left
+            anchors.leftMargin: 25
+            anchors.topMargin: 30
+
         Text {
             font.pointSize: 32
             width: parent.width
+            height: 50
+            //anchors.top: parent.top
             text: "Course: " + course
         }
 
         Text {
             font.pointSize: 32
             width: 400
+            height: 50
             text: "Hole #" + hole
         }
 
         Text {
             font.pointSize: 32
             width: 400
+            height: 50
             text: "Hit #" + hit
         }
 
+        }
 
         Button {
             id: clubselectionButton
-            width: 300
+            width: parent.width-40
+            anchors.top: info.bottom
+            anchors.topMargin: 30
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+
             text: appWindow.clubsinitiated ? clubselection.model.get(clubselection.selectedIndex).name : "Select club"
                       //gpsswitch.checked ? "GPS ON" : "GPS OFF"
 
@@ -352,7 +412,10 @@ Page {
 
         }
 
-
+Column {
+    id: buttongroup
+    anchors.top: clubselectionButton.bottom
+    anchors.topMargin: 30
 
     Button {
         id: savebutton
@@ -369,6 +432,11 @@ Page {
         onClicked: ballpotted()
         //hit count +1, hole +1 etc...
     }
+}
+
+Row {
+    anchors.top: buttongroup.bottom
+    anchors.topMargin: 20
     Button {
         id: undobutton
         width: 150
@@ -387,18 +455,37 @@ Page {
 
         //abort the whole stuff, SHOULD THIS REMOVE EVERYTHING?!?? now it leaves sql entries already written intact...
     }
+}
+    Row {
 
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 50
+        anchors.left: parent.left
+        anchors.leftMargin: 10
 
      Text {
-         id: stats
-         width: appWindow.width
+         id: stats1
+         width: parent.width/2
+         //anchors.left: parent.left
          font.pointSize: 16
          //wrapMode:Wrap
-         text: ""
+         text: "<b>Front 9:</b>\n"
 
      }
 
-    }
+     Text {
+         id: stats2
+         width: 240
+         font.pointSize: 16
+         //anchors.left: stats1.right
+         //wrapMode:Wrap
+         text: "<b>Back 9:</b>\n"
+
+}
+
+     }
+
+
 
 
 
