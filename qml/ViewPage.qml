@@ -1,12 +1,16 @@
 import QtQuick 1.0
 import com.meego 1.0
-import "../functions.js" as Functions
+import "../functions.js" as Funcs
 
 
 
 Page {
+
+    // 1. INITING THE CURRENT PAGE, CREATING VARIABLES ETC
+
     id: viewPage
     property bool norecords
+    property int indextemp
     norecords:{ "false"}
     tools: viewtools
     width: parent.width
@@ -16,27 +20,81 @@ Page {
 
     Component.onCompleted: update()
 
-    function open(indx, mode) {
-        if (norecords) {
-            console.log("nothing")
-        }
-        else {
-        appWindow.sessionidtemp = playbackmodel.get(indx).id
-        opendialog.open()
-        }
+
+    // 2. FUNCTIONS
+
+
+    // 2.1 UPDATE EVERYTHING NEEDED AS SOON AAS PAGE HAS BEEN LOADED
+
+    function update() {
+        roundbutton.enabled = false
+        clubbutton.enabled = true
+        //mapbutton.enabled = true
+
+
+        Funcs.read(3)
+
+
+    }
+    // OPEN DEL DIALOG
+    function open_deldialog(ind) {
+        indextemp = ind
+        deldialog.open()
+
 
     }
 
+    function delround() {
+        Funcs.removeround(indextemp)
+        //clear entries½!!!
+        playbackmodel.clear()
+        update()
+    }
+
+
+    //  2.2 OPEN TAPPED ITEM FROM LISTVIEW
+    function open(indx, mode) {
+        /*if (norecords) {
+            console.log("nothing")
+        }*/
+        //else {
+        appWindow.sessionidtemp = playbackmodel.get(indx).id
+        opendialog.open()
+        //}
+
+    }
+    // 2.3 OPEN TAPPED ITEM IN MAP (MAP BUTTON IN DIALOG PRESSED)
     function inmap() {
         appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
         opendialog.accept()
     }
+
+    // 2.4 OPEN TAPPED ITEM IN LISTVIEW (LIST BUTTON IN DIALOG PRESSED)
 
     function aslist() {
         appWindow.pageStack.push(Qt.resolvedUrl("DetailsPage.qml"))
         opendialog.accept()
     }
 
+
+
+    // 3. QML COMPONENTS
+
+
+    Rectangle {
+        id: background
+        z: 0
+        width: parent.width
+        height: parent.height
+
+        Text {
+            font.pointSize: 20
+            text: "No entries found"
+        }
+    }
+
+
+    // 3.1 DIALOG TO SELECT HOW ONE WANTS TO VIEW SELECTED ROUND, OPENS FROM 2.1
 
     Dialog {
         id: opendialog
@@ -76,6 +134,21 @@ Page {
     }
 
 
+    // 3.2 ARE YOU SURE DIALOG FOR ROUND DELETING
+
+    QueryDialog {
+        id: deldialog
+        acceptButtonText: "OK"
+        message: "This will erase selected round"
+        rejectButtonText: "Cancel"
+        titleText: "Are you sure?"
+        onAccepted: delround()
+        //onAccepted: console.log("Deleting entry #" + (indextemp))
+        //onRejected: console.log("abort aborted")
+}
+
+
+    // 3.3 CONSTRUCT THE LIST OF ENTRIES
     Item {
         anchors.fill: parent
 
@@ -84,6 +157,7 @@ Page {
 
         }
 
+        // TITLE CREATION
 
         Component {
             id: delegatetitle
@@ -107,6 +181,10 @@ Page {
             }
         }
 
+
+        // ITEM CREATION
+
+
         Component {
             id: delegatestuff
 
@@ -116,6 +194,16 @@ Page {
                 width: parent.width
 
 
+                //experimental: add button to delete selected entry...
+                Button {
+                    anchors.right: parent.right
+                    anchors.bottom: parent.bottom
+                    width: 100
+                    height: 100
+                  visible:!norecords
+                  text: "Delete"
+                  onClicked: open_deldialog(index)
+                }
 
                 Column {
                     Text {
@@ -144,6 +232,8 @@ Page {
 
         }
 
+
+        // 3.4 CONSTRUCT THE LIST WITH SECTIONS
         ListView {
             id: list
             anchors.fill:  parent
@@ -151,6 +241,8 @@ Page {
             focus: true
             section.property: "id"
             section.delegate: delegatetitle
+            visible: !norecords
+            //visible: false
 
             delegate: delegatestuff
 
@@ -166,14 +258,5 @@ Page {
     }
 
 
-    function update() {
-        roundbutton.enabled = false
-        clubbutton.enabled = true
-        //mapbutton.enabled = true
 
-
-        Functions.read(3)
-
-
-    }
 }

@@ -192,6 +192,8 @@ var r = ""
                     case 3:
                         //populate sectionscroller
                         console.log("populating sectionscroller")
+                        var date = Qt.formatDate(new Date(), "ddMMyy")
+                        var time = Qt.formatTime(new Date(), "hhmm")
 
                         db.transaction(
                                     function(rx) {
@@ -202,14 +204,13 @@ var r = ""
                                         }
                                         catch(e) {
                                             console.log("error was: " + e)
-                                            var date = Qt.formatDate(new Date(), "ddMMyy")
-                                            var time = Qt.formatTime(new Date(), "hhmm")
 
-                                            playbackmodel.append({name: "No records found",
+
+                                            /*playbackmodel.append({name: "No records found",
                                                                      date: date,
                                                                      id:1,
-                                                                     time: time})
-                                            norecords = true
+                                                                     time: time})*/
+                                            viewPage.norecords = true
 
                                             return
                                         }
@@ -218,10 +219,13 @@ var r = ""
 
 
                                         if(populate.rows.length < 1) {
-                                                playbackmodel.append({name: "No records found",
-                                                                         date: 000000,
-                                                                         id:0,
-                                                                         time: 0000})
+                                                /*playbackmodel.append({name: "No records found",
+                                                                         date: date,
+                                                                         id:1,
+                                                                         time: time})*/
+
+                                            viewPage.norecords = true
+
 
                                         }
 
@@ -879,13 +883,47 @@ function getpar(course, numbr) {
 
 }
 
+function removeround(id) {
+    id ++
+
+    var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+    cdb.transaction(
+                function(tx) {
+                    try{
+                        console.log("removing round " + id)
+
+                        /*var test = tx.executeSql('SELECT * FROM gore')
+
+                        for (var i = 0; i < test.rows.length; i++ ) {
+                            console.log("id: " + test.rows.item(i).id + " club: " + test.rows.item(i).club)
+                        }*/
+
+
+                        var deletestring = 'DELETE FROM gore WHERE sessionid="' + id +'"'
+                       // console.log("Deletestring: " + deletestring)
+                        tx.executeSql(deletestring)
+                        //console.log("Y U NOT WORK?!?")
+                    }
+
+                    catch(e) {
+                        console.log("Funcs removeround SQL error: " +e)
+    }
+                    //console.log("here we go")
+                    //norecords = true //this doesnt work as intended!
+}
+
+                )
+
+
+}
+
 function removecourse(name) {
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(
                 function(tx) {
                     try{
-                        var hcp = tx.executeSql('DELETE FROM courses WHERE coursename="' + name +'"')
+                        tx.executeSql('DELETE FROM courses WHERE coursename="' + name +'"')
                     }
 
                     catch(e) {
@@ -904,7 +942,7 @@ function removeclub(id) {
     cdb.transaction(
                 function(tx) {
                     try{
-                        var hcp = tx.executeSql('DELETE FROM clubs WHERE idnumber="' + id +'"')
+                        tx.executeSql('DELETE FROM clubs WHERE idnumber="' + id +'"')
                     }
 
                     catch(e) {
