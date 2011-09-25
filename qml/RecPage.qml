@@ -18,6 +18,9 @@ Page {
     property string undotemp
     property string session
     property string lastholehits
+    property bool undoused
+    undoused: {"false"}
+
     orientationLock: PageOrientation.LockPortrait
 
     //init clubs
@@ -48,10 +51,11 @@ Page {
 
     function undo() {
         console.log("This will be undoed: " + undotemp)
+        undoused = true
         //this can be either pot or hit
         if (undotemp === "pot") {
             hole --
-            hit = lastholehits
+            hit = lastholehits + 1
             //decrease hole
             //how in heavens name I can figure out amount of hits already hit?!??!?
         }
@@ -76,6 +80,7 @@ Page {
 
     function ballpotted() {
         //console.log("amount of hits: " + hit)
+        undoused = false
         var hittemp = hit - 1
         hit--
         lastholehits = hit
@@ -104,6 +109,7 @@ Page {
     }
 
     function savedata(overrideclub) {
+        undoused = false
 
 
         if (!appWindow.clubsinitiated) {
@@ -371,7 +377,7 @@ Page {
             anchors.top: gpsstatusswitchrow.bottom
             anchors.left: parent.left
             anchors.leftMargin: 25
-            anchors.topMargin: 30
+            anchors.topMargin: 10
 
         Text {
             font.pointSize: 32
@@ -400,6 +406,7 @@ Page {
         Button {
             id: clubselectionButton
             width: parent.width-40
+            height: 50
             anchors.top: info.bottom
             anchors.topMargin: 30
             anchors.left: parent.left
@@ -415,19 +422,22 @@ Page {
 Column {
     id: buttongroup
     anchors.top: clubselectionButton.bottom
-    anchors.topMargin: 30
+    anchors.topMargin: 10
+    anchors.left: info.left
 
     Button {
         id: savebutton
         text: "Hit"
-        width: 400
+        width: clubselectionButton.width
+        height: 50
         visible: true
         onClicked: savedata()
 
     }
     Button {
         id: holedonebutton
-        width: 400
+        width: clubselectionButton.width
+        height: 50
         text: "Ball in the hole"
         onClicked: ballpotted()
         //hit count +1, hole +1 etc...
@@ -436,11 +446,14 @@ Column {
 
 Row {
     anchors.top: buttongroup.bottom
-    anchors.topMargin: 20
+    anchors.topMargin: 10
+    anchors.left: info.left
     Button {
         id: undobutton
-        width: 150
+        width: clubselectionButton.width/2
+        height: 50
         text: "UNDO"
+        enabled: !undoused
         onClicked:  undodialog.open()
         //hit count -1, remove last row etc?
     }
@@ -448,7 +461,8 @@ Row {
     Button {
         id: abortbutton
         //color: red
-        width: 150
+        width: clubselectionButton.width/2
+        height: 50
         text: "ABORT!"
         onClicked: rusuredialog.open()
 
