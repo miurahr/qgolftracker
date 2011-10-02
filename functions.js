@@ -1,11 +1,13 @@
+//1. Write
+//write given data to 'gore' database
+
 function write(sess, lat, lon, alt, horacc, veracc, dat, tim, club, course, hole) {
 
-
-    //alt1 = String(alt)
+    console.log('1: Funcs.write(' + sess + ", " + lat + ", " + lon + ", " + alt + ", " + horacc + ", " + veracc + ", " + dat + ", " + tim + ", " + club + ", " + course + ", " + hole + ")")
+    //if vertical accuracy is not ok, put a compromise altitude.
     if(veracc=-1) {alt = 100 }
-    //console.log("function write called with " + lat  + " " + lon + " " + alt + " " + horacc + " " +veracc + " " + dat + " " +tim + " " + club + " " + course + " " +hole)
 
-    //data to be saved:
+    //data to be saved to table 'gore' :
     //idnumber          id int
     //sessionid         sessionid int
     //gps position      latitude int
@@ -23,30 +25,27 @@ function write(sess, lat, lon, alt, horacc, veracc, dat, tim, club, course, hole
 
     db.transaction(
                 function(tx) {
-                    //tx.executeSql('DROP TABLE gore')
-
                     tx.executeSql('CREATE TABLE IF NOT EXISTS gore(id int, sessionid int, latitude decimal, longitude decimal, altitude int, horizontalaccuracy int, verticalaccuracy int, date int, time int, club varchar, course varchar, hole int)')
 
+                    //get max ID from 'gore' and +1 it if found. if not found, start from 1
                     var readmax = tx.executeSql('SELECT MAX(id) AS maxid FROM gore')
                     var idmax = readmax.rows.item(0).maxid
 
                     if (idmax === "") {
-                       // console.log("no previous entries!")
                         idmax = 1
                     }
                     else {
-                       // console.log("previous entries, " +idmax)
                         idmax ++
                     }
 
 
-
+                    //write data to table
                     try {
                     tx.executeSql('INSERT INTO gore VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', [ idmax, sess, lat, lon, alt, horacc, veracc, dat, tim, club, course, hole ]
                              )
                     }
                     catch(e) {
-                        console.log("feedback from write: " + e )
+                        console.log("write (1) error: " + e )
                     }
 
 
@@ -59,8 +58,9 @@ function write(sess, lat, lon, alt, horacc, veracc, dat, tim, club, course, hole
 }
 
 
-// get the biggest number of a session and +1 it!
+// 2. get the biggest number of a session and +1 it!
 function getnewsession() {
+    console.log("2: Funcs.getnewsession()")
     var number
     var  db = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     db.transaction(
@@ -75,32 +75,22 @@ function getnewsession() {
                         }
                     }
 
-                     //   else {
 
                     if (number != 1) {
-                    //console.log("there are older entries!")
-                    var sessionmax = rx.executeSql('SELECT MAX(sessionid) AS maxsession FROM gore')
-                        //console.log("sessionmax: " + sessionmax)
+                        var sessionmax = rx.executeSql('SELECT MAX(sessionid) AS maxsession FROM gore')
                         number = sessionmax.rows.item(0).maxsession
                         number ++
-                        //console.log("number: " + number)
-                        //console.log("rowlenght: " + sessionmax.rows.length)
                }
 }
-
-
-
-
-
 )
-//console.log("number is: " + number)
     return number
 }
 
 
 
-
+// 3. destroy all the data, should this be removed completely?!? you already have a way to delete courses and rounds...
 function destroyall() {
+    console.log("3: Funcs.destroyall()")
 var ff = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 ff.transaction(
             function(dstroy) {
@@ -125,104 +115,30 @@ ff.transaction(
     populatecourses(true)
 }
 
-function read(what) {
+
+// 4. populatelist get data from 'gore' and populate it to sectionscroller to ViewPage.qml
+function populatelist() {
+    console.log("Funcs.populatelist()")
     var  db = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
-var r = ""
-                    switch (what) {
-
-                    case 1:
-                        //is this now obsolete?!?
-                        console.log("someone wants to know distance!");
-                        /*var a = 1
-                        var b = 100
-                        var c = "supermaila"
-                        var alldata = a + ", " + b + ", " + c
-                        console.log("all the data: " +alldata)
-                        return alldata*/
-//var  db = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
-                        db.transaction(
-                                    function(rx) {
-                                        var read = rx.executeSql('SELECT * FROM gore')
-                                        //console.log("database read")
-                                        //var r = ""
-                                        for (var i=0; i < read.rows.length; i++) {
-                                            r += read.rows.item(i).idnumber + ", "
-                                            //console.log(r)
-                                            r += read.rows.item(i).latitude + ", "
-                                            //console.log(r)
-                                            r += read.rows.item(i).longitude + ", "
-                                            //console.log(r)
-                                            r += read.rows.item(i).altitude + ", "
-                                            //console.log(r)
-                                            r += read.rows.item(i).club + "|"
-                                            //console.log(r)
-                                        }
-                                        console.log("r is: " +r)
-                                        //return r
-                                        }
-
-                                        )
-                        console.log("r is: " +r)
-                        textArea.text = r
-                        return r
-
-                        break
-
-                    case 2:
-                        //is this obsolete?!?!?
-                        console.log("you want to have it all, don't you!")
-                        var everything = ""
-                        //var  db = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
-                        db.transaction(
-                         function(rx) {
-                         var read = rx.executeSql('SELECT * FROM gore')
-                                        everything += read.rows.toString()
-                                                                 }
-
-                                                                )
-                        console.log(everything)
-                        textArea.text = everything
-
-
-                        //return r
-
-
-                        break
-
-                    case 3:
-                        //populate sectionscroller
-                        console.log("populating sectionscroller")
-                        var date = Qt.formatDate(new Date(), "ddMMyy")
-                        var time = Qt.formatTime(new Date(), "hhmm")
 
                         db.transaction(
                                     function(rx) {
 
-
+                                        //try if database read succeeds, if not, disable sectionscroller
                                         try {
                                             rx.executeSql('SELECT sessionid, course, date, time FROM gore GROUP BY sessionid')
                                         }
                                         catch(e) {
-                                            console.log("error was: " + e)
-
-
-                                            /*playbackmodel.append({name: "No records found",
-                                                                     date: date,
-                                                                     id:1,
-                                                                     time: time})*/
-                                            viewPage.norecords = true
+                                            console.log("populatelist (4) error was: " + e)
+                                            viewPage.norecords = true //tell to ViewPage.qml that there is no records (hide sectionscroller)
 
                                             return
                                         }
-
+                                        // if database read succeeded, if rows are less than 1, disable sectionscroller
                                         var populate = rx.executeSql('SELECT sessionid, course, date, time FROM gore GROUP BY sessionid')
 
 
                                         if(populate.rows.length < 1) {
-                                                /*playbackmodel.append({name: "No records found",
-                                                                         date: date,
-                                                                         id:1,
-                                                                         time: time})*/
 
                                             viewPage.norecords = true
 
@@ -232,7 +148,8 @@ var r = ""
                                         for (var i=0; i<populate.rows.length; i++){
 
 
-
+                                        //populate
+                                            //DATE AND TIME MUST BE MODIFIED?!?!?!
                                         playbackmodel.append({name: populate.rows.item(i).course,
                                                              date: populate.rows.item(i).date,
                                                              id: populate.rows.item(i).sessionid,
@@ -243,42 +160,15 @@ var r = ""
                                         )
 
 
-                        break
-                    case 4:
-                        db.transaction(
-                        function(tx) {
-
-                            var checkup = tx.executeSql('SELECT * FROM gore')
-
-                        var r = ""
-
-                        for (var i=0; i < checkup.rows.length; i++) {
-                            r += "read id: " + checkup.rows.item(i).id + ", session: " + checkup.rows.item(i).session
-                            r += ", latitude: " + checkup.rows.item(i).latitude + ", longitude: " + checkup.rows.item(i).longitude
-                            r += ", altitude: " +checkup.rows.item(i).altitude + ", horiz. acc: " + checkup.rows.item(i).horizontalaccuracy
-                            r += ", vertical acc." + checkup.rows.item(i).verticalaccuracy + ", date: " + checkup.rows.item(i).date
-                            r += ", time: " + checkup.rows.item(i).time + ", club: " + checkup.rows.item(i).club
-                            r += ", course: " + checkup.rows.item(i).course + ", hole: " + checkup.rows.item(i).hole + "\n"
-                        }
-                        console.log(r)
-                        }
-                                    )
-                        break
-                    default:
-                        console.log("What should I read?!?")
-                        return "Errpor!!"
-                    }
-
 
 }
 
+// 5. writeclubs, write club data
 function writeclubs(number, club) {
+    console.log("5: Funcs.writeclubs("+ number + ", " + club + ")")
 
-    //
 
-    //console.log("function writeclubs called with number " + number + " and club " + club)
-
-    //data to be saved:
+    //data to be saved to table 'clubs':
     //idnumber          idnumber int
     //club              club varchar
 
@@ -287,82 +177,78 @@ function writeclubs(number, club) {
 
     cdb.transaction(
                 function(tx) {
-                    //tx.executeSql('DROP TABLE clubs')
                     tx.executeSql('CREATE TABLE IF NOT EXISTS clubs(idnumber int, club varchar)')
-
-                    tx.executeSql('INSERT INTO clubs VALUES (?,?)', [ number, club ]
-                             )
-
+                    try {
+                    tx.executeSql('INSERT INTO clubs VALUES (?,?)', [ number, club ])
+                    }
+                    catch(e) {
+                        console.log('writeclubs (5) error: ' +e)
+                    }
 }
                 )
-
-
-
-
 }
 
+
+//6. readclub, read club data from given number
+
 function readclub(number) {
+    console.log("6: Funcs.readclub("+ number + ")")
     var clubsname = ""
-    var number2 = 0
+    var number2
     //console.log("Club number " + number + " name requested")
     var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+
+    //if number is instead string 'clubamount', function returns clubamount. used in other functions to get amount of rows in database.
     if (number == "clubamount") {
         cdb1.transaction(
                     function(tx) {
-                    var amountclbs = tx.executeSql('SELECT MAX(idnumber) as maxid FROM clubs')
-
+                        try {
+                            tx.executeSql('SELECT MAX(idnumber) as maxid FROM clubs')
+                            }
+                        catch(e) {
+                            console.log(' readclub (6) error: ' +e )
+                            return
+                        }
+                        var amountclbs = tx.executeSql('SELECT MAX(idnumber) as maxid FROM clubs')
                         number2 = amountclbs.rows.item(0).maxid
-
-
                     }
                     )
-
-        //console.log("fuck")
-        //console.log("number is: " + number2)
-
+        //wtf how does this work?!?!?!?!?!?
         return number2
-            console.log("no such club")
-            return ""
+        //    console.log("no such club")
+        //    return ""
 }
 
         else {
     cdb1.transaction(
                 function(tx) {
 
-                        //var all = tx.executeSql('SELECT club FROM clubs')
-                        //console.log("amount: " + all.rows.length)
 
                         var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
-
-                    //var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
-                    //var clubsname = ""
-                        //console.log("length: " + clubname.rows.length)
-                        //console.log("nimi: " + clubname.rows.item(0).club)
 
                         if (clubname.rows.length != 0) {
                         clubsname += clubname.rows.item(0).club
                         }
-
+                        //if rows length = 0, put text 'empty' as a placeholder
                         else {
                         clubsname += "empty"
                         }
                 }
                     )
-    //console.log("Clubsname is before return: " + clubsname)
     return clubsname
 }
 }
 
-
-
-
+// 7. writecourse. write course to database 'courses'
 function writecourse(operation, number, coursename, holenumber, par, hcp) {
+    console.log("7: Funcs.writecourse(" + operation + ", " + number + ", " + coursename + ", " + holenumber + ", " + par + ", " + hcp + ")")
 
     //
     var  cdc = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
     switch(operation) {
 
+        //operation update called
     case "update":
         console.log("updating par: " + par + " and hcp: " + hcp + " to db")
         console.log("update called")
@@ -373,7 +259,7 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
                             tx.executeSql('UPDATE courses SET hcp=' + parseFloat(hcp) + ' WHERE idnumber=' + number)
                         }
                         catch(e) {
-                            console.log("output was: " + e)
+                            console.log("writecourse (7) update error: " + e)
                         }
 
                     }
@@ -390,6 +276,8 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
     //hole number              holenumber int
     //par                      par int
     //handicap                 hcp varchar
+
+        //this really breaks the logic completely!!! this is probably why the stuff is buggy....
 
         if (number === "") {
             //console.log("no number supplied!")
@@ -450,9 +338,11 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
 }
 }
 
-function readcourse(action, arg1, arg2, arg3) {
 
-    //what the hell do I need to know?!
+//8. readcourse, read course data from 'courses'
+function readcourse(action, arg1, arg2, arg3) {
+    console.log("8: Funcs.readcourse("+ action + ", " + arg1 + ", " + arg2 + ", " + arg3 + ")")
+
     var cdb2 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     switch (action) {
 
@@ -487,14 +377,14 @@ function readcourse(action, arg1, arg2, arg3) {
                             amount ++
                         }
 
-                        console.log("you have " + amount + " holes defined")
+                        //console.log("you have " + amount + " holes defined")
 
 
 
 
 }
                         )
-        console.log("returning amount: " + amount)
+       // console.log("returning amount: " + amount)
     return amount
 
 
@@ -508,7 +398,7 @@ function readcourse(action, arg1, arg2, arg3) {
                             tx.executeSql('SELECT coursename FROM courses GROUP BY coursename')
                         }
                         catch(e) {
-                            console.log("Error was: " +e)
+                            console.log("readcourse (8) name error: " +e)
                             if (e !== "") {
                                 console.log("you don't have courses defined. adding placeholder")
                                 coursenametemp = "Add course"
@@ -605,29 +495,27 @@ function readcourse(action, arg1, arg2, arg3) {
                         tx.executeSql('DROP TABLE courses')
                     }
                         )
-        //console.log("requested course name: " + coursenametemp)
+
         return "table dropped"
 
 }
 }
+
+// 9. populateclubs, populate clubs to selectiondialog
 function populateclubs() {
-    //console.log("clubs are " + readclub("clubamount"))
+    console.log("9: Funcs.populateclubs()")
+
     for (var i=1;i<=readclub("clubamount");i++) {
         var clubtemp = readclub(i)
-        //console.log("clubtemp: " + clubtemp)
-        //console.log("output of function: " + readclub(i))
-        //if (clubtemp !== "") {
             clubModel.append({name:clubtemp})
-        //}
-    //else {
-           // console.log("reached end of the club stuff")
-      //  }
-    appWindow.clubsinitiated = true
+            appWindow.clubsinitiated = true
 
 }
 }
 
+// 10. populateholes, populate holes to sectionscroller
 function populateholes(name) {
+    console.log("10: Funcs.populateholes(" + name +")")
 
     //add read amnt of holes here!
     var holes
@@ -647,7 +535,7 @@ function populateholes(name) {
 }
                 )
 
-    console.log("amount of holes: " + holes)
+    //console.log("amount of holes: " + holes)
 
 
 
@@ -663,14 +551,16 @@ function populateholes(name) {
 
 }
 
+// 11. populatecourses, populate courses to selection dialog
 function populatecourses(addedit) {
+    console.log("11: Funcs.populatecourses("+ addedit + ")")
     //console.log("You have " + readcourse("quantity","","") + " courses defined")
-    console.log("populating courses initiated")
+    //console.log("populating courses initiated")
     //console.log("quantity :" + readcourse("quantity","","",""))
     for (var i=1;i<=readcourse("quantity","","","");i++) {
         var coursetemp = readcourse("name",i,"","")
         courseModel.append({name:coursetemp})
-        console.log(coursetemp + " has been added to list")
+        //console.log(coursetemp + " has been added to list")
     }
     if (addedit) {
     //courseModel.append({name: "Add course" })
@@ -679,13 +569,16 @@ function populatecourses(addedit) {
 
 }
 
+// 12. populate hcp, just create numbers from 1 to 30 into it
 function populatehcp() {
     for (var i=1; i<= 30; i++) {
         hcpNumbers.append({value:i})
     }
 }
 
+// 13. populatedetails, xxxxxxxx
 function populatedetails(){
+    console.log("13: Funcs.populatedetails()")
 
     /*
       We need:
@@ -732,7 +625,9 @@ function populatedetails(){
 
 }
 
+// 14. populatemap
 function populatemap() {
+    console.log("14: Funcs.populatemap()")
 
     /*
       We need:
@@ -819,9 +714,9 @@ function populatemap() {
 
 
 
-
+//15. getdistance. THIS CAN BE DONE ALSO WITH QML COORDINATE FUNCTIONS, SHOULD THIS BE CHANGED?
 function getdistance(lat1, lon1, lat2, lon2) {
-
+    console.log("15: Funcs.getdistance("+ lat1 + ", " + lon1 + "," + lat2 + "," + lon2 +")")
     //thanks for the equations, http://www.movable-type.co.uk/scripts/latlong.html !
 
     var R = 6371; // km
@@ -847,7 +742,10 @@ function getdistance(lat1, lon1, lat2, lon2) {
 //par                      par int
 //handicap                 hcp varchar
 
+
+// 16. gethcp
 function gethcp(course, numbr){
+    console.log("16: Funcs.gethcp(" + course + ", " + numbr + ")")
     var hcpn
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
@@ -863,7 +761,9 @@ function gethcp(course, numbr){
     return hcpn
 }
 
+// 17. getpar
 function getpar(course, numbr) {
+    console.log("17: Funcs.getpar(" + course + ", " + numbr + ")")
     var parn
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
@@ -883,9 +783,9 @@ function getpar(course, numbr) {
 
 }
 
+// 18. removeround
 function removeround(id) {
-    //id ++
-
+    console.log("18: Funcs.removeround(" + id + ")")
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(
                 function(tx) {
@@ -917,7 +817,9 @@ function removeround(id) {
 
 }
 
+//19. removecourse
 function removecourse(name) {
+    console.log("19: Funcs.removecourse(" + name +  ")")
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(
@@ -934,8 +836,9 @@ function removecourse(name) {
 
 
 }
-
+//20. removeclub
 function removeclub(id) {
+    console.log("20: Funcs.removeclub(" + id +")")
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
@@ -954,7 +857,9 @@ function removeclub(id) {
 
 }
 
+//21. removelastrow, remove last row from 'gore'
 function removelastrow() {
+    console.log("21: Funcs.removelastrow()")
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
@@ -973,7 +878,9 @@ function removelastrow() {
 
 }
 
+//22. removelastround, remove everything with biggest 'sessionid' from 'gore'
 function removelastround() {
+    console.log("22: Funcs.removelastround()")
 
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(

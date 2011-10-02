@@ -32,7 +32,7 @@ Page {
         //mapbutton.enabled = true
 
 
-        Funcs.read(3)
+        Funcs.populatelist()
 
 
     }
