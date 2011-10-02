@@ -84,7 +84,7 @@ PageStackWindow {
         }
 
     }
-
+    // this should be removed after adding edit buttons to MainPage.qml
     Menu {
         id: myMenu
         visualParent: pageStack

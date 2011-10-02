@@ -1,9 +1,26 @@
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// Table: gore                                                                                      //
+// columns:                                                                                         //
+// 1 id (int) | 2 sessionid (int) | 3 latitude (int) | 4 longitude (int) | 5 altitude (int)         //
+// 6 horizontalaccuray (int) | 7 verticalaccuracy (int) | 8 date (int) | 9 time (int)               //
+// 10 club (varchar) | 11 course (varchar) | 12 hole (int)                                          //
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////
+// Table: courses
+// columns:
+//
+
+
+
+
 //1. Write
 //write given data to 'gore' database
 
 function write(sess, lat, lon, alt, horacc, veracc, dat, tim, club, course, hole) {
 
     console.log('1: Funcs.write(' + sess + ", " + lat + ", " + lon + ", " + alt + ", " + horacc + ", " + veracc + ", " + dat + ", " + tim + ", " + club + ", " + course + ", " + hole + ")")
+
     //if vertical accuracy is not ok, put a compromise altitude.
     if(veracc=-1) {alt = 100 }
 
@@ -98,7 +115,7 @@ ff.transaction(
                     dstroy.executeSql('DROP TABLE gore')
                     }
                     catch(e){
-                        console.log("error: " +e)
+                        console.log("destroyall (3) error: " +e)
                     }
 
                     try{
@@ -107,7 +124,7 @@ ff.transaction(
                     }
                     catch(e)
                     {
-                        console.log("error: " + e)
+                        console.log("destroyall (3) error: " + e)
                     }
             }
                 )
@@ -290,7 +307,7 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
                             }
 
                             catch(e) {
-                                console.log("error was: " + e)
+                                console.log("writecourse (7) SELECT MAX error was: " + e)
 
                                 if (e !== "") {
                                     temp = 1
@@ -303,14 +320,6 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
                             temp ++
                             console.log("temp = " + temp + ", rowslength: " + read.rows.lenght)
                             }
-
-
-                            /*var fckinshit = tx.executeSql('SELECT * FROM courses')
-
-                            for (var i = 0; i < fckinshit.rows.length; i++) {
-                                console.log("id: " + fckinshit.rows.item(i).idnumber + "\n")
-
-                            }*/
                         }
                             )
 
@@ -318,21 +327,28 @@ function writecourse(operation, number, coursename, holenumber, par, hcp) {
 
 
         }
-        /*if (number === "") {
-            number = 1
-        }*/
 
         console.log("idnumber: " + number)
     cdc.transaction(
                 function(tx) {
                     //tx.executeSql('DROP TABLE clubs')
                     tx.executeSql('CREATE TABLE IF NOT EXISTS courses(idnumber int, coursename varchar, holenumber int, par int, hcp varchar)')
+                        try {
+
+
+
                         tx.executeSql('INSERT INTO courses VALUES (?,?,?,?,?)', [ number, coursename, holenumber, par, hcp ]
-                             )
+                           )
+                        }
+
+                        catch(e) {
+                            console.log("writecourse (7) INSERT INTO error: " + e )
+                        }
+
+
 
 }
                 )
-
 
   break
 }
@@ -360,32 +376,23 @@ function readcourse(action, arg1, arg2, arg3) {
 
                         catch(e) {
 
-                            //this not works at all!
-                            console.log("catch started with e= " +e)
                             if(e !== "") {
                                 amount = 1
-                                console.log("you have no holes defined")
                                 return amount
 
                             }
                         }
 
 
-                        console.log("no error")
+                        //console.log("no error")
                         amount = coursemax.rows.length
                         if (amount === 0) {
                             amount ++
                         }
 
-                        //console.log("you have " + amount + " holes defined")
-
-
-
-
-}
+                        }
                         )
-       // console.log("returning amount: " + amount)
-    return amount
+          return amount
 
 
     case "name":
@@ -410,26 +417,17 @@ function readcourse(action, arg1, arg2, arg3) {
 
 
 
-                        //console.log("success, you have courses defined and zero errors")
+
                         var courseread = tx.executeSql('SELECT coursename FROM courses GROUP BY coursename')
                         if (courseread.rows.length === 0) {
-                            //console.log("zero items, add placeholder!")
                             coursenametemp = "Add course"
-                            //console.log("returning " + coursenametemp)
                             return coursenametemp
 
                         }
 
                         var numb = arg1 - 1
                         coursenametemp = courseread.rows.item(numb).coursename
-
-
-
-                        //GROUP BY
-                        //coursenametemp = courseread.rows.length
-
 } )
-        //console.log("course name: " + coursenametemp)
 
         return coursenametemp
 
@@ -439,10 +437,7 @@ function readcourse(action, arg1, arg2, arg3) {
         cdb2.transaction(
         function(tx) {
             var amntholes = tx.executeSql('SELECT * FROM courses WHERE coursename="' +arg1 +'"')
-            //var amntholes = tx.executeSql('SELECT * FROM courses')
-            amountofholes = amntholes.rows.length
-            //console.log("there are " + amountofholes + " holes in this course!")
-
+               amountofholes = amntholes.rows.length
         }
 )
         return amountofholes
@@ -452,11 +447,7 @@ function readcourse(action, arg1, arg2, arg3) {
         var idnmber = ""
         cdb2.transaction(
                     function(tx) {
-                        /*try { tx.executeSql('SELECT * FROM courses WHERE coursename="' + arg1 + '" AND holenumber=' +arg2)
-                        }
-                        catch(e) {
-                            console.log("error was: " + e)
-                        }*/
+
 
                         var idnmb = tx.executeSql('SELECT * FROM courses WHERE coursename="' + arg1 + '" AND holenumber=' +arg2)
                         idnmber = idnmb.rows.item(0).idnumber
@@ -473,8 +464,6 @@ function readcourse(action, arg1, arg2, arg3) {
 
                     }
                         )
-
-        //read hole id where course = and hole =
         return idnmber
 
 
@@ -487,17 +476,7 @@ function readcourse(action, arg1, arg2, arg3) {
 
                          }
                     )
-        //console.log("par: " + par)
                     return par
-    case "clear":
-        cdb2.transaction(
-                    function(tx) {
-                        tx.executeSql('DROP TABLE courses')
-                    }
-                        )
-
-        return "table dropped"
-
 }
 }
 
@@ -517,35 +496,17 @@ function populateclubs() {
 function populateholes(name) {
     console.log("10: Funcs.populateholes(" + name +")")
 
-    //add read amnt of holes here!
     var holes
-        //= 9
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
     cdb.transaction(
                 function(tx) {
                      var read = tx.executeSql('SELECT * FROM courses WHERE coursename="' + name +'"')
                      holes = read.rows.length
-                    /*
-                    for(var i = 0; i < read.rows.length; i++) {
-                        var j = i + 1
-                        console.log("hole: " + j + " par: " + read.rows.item(i).par)
-
-                    }*/
-
-}
+                    }
                 )
-
-    //console.log("amount of holes: " + holes)
-
-
-
-
-
-
 
     for (var i = 1; i <= holes; i++ ) {
         holeNumbers.append({value: i})
-        //console.log("added hole #" + i)
     }
 
 
@@ -554,20 +515,11 @@ function populateholes(name) {
 // 11. populatecourses, populate courses to selection dialog
 function populatecourses(addedit) {
     console.log("11: Funcs.populatecourses("+ addedit + ")")
-    //console.log("You have " + readcourse("quantity","","") + " courses defined")
-    //console.log("populating courses initiated")
-    //console.log("quantity :" + readcourse("quantity","","",""))
     for (var i=1;i<=readcourse("quantity","","","");i++) {
         var coursetemp = readcourse("name",i,"","")
         courseModel.append({name:coursetemp})
-        //console.log(coursetemp + " has been added to list")
+        }
     }
-    if (addedit) {
-    //courseModel.append({name: "Add course" })
-        //obsolete?!?
-    }
-
-}
 
 // 12. populate hcp, just create numbers from 1 to 30 into it
 function populatehcp() {
@@ -596,7 +548,8 @@ function populatedetails(){
     cdb.transaction(
                 function(tx) {
                     var tmp = tx.executeSql('SELECT * FROM gore WHERE sessionid=' + appWindow.sessionidtemp)
-
+                    var holetemp
+                    var hittemp = 1
                     for (var i=0; i < tmp.rows.length; i++) {
                         var two = i + 1
                         var latid1 = tmp.rows.item(i).latitude
@@ -605,23 +558,23 @@ function populatedetails(){
                         var latid2 = tmp.rows.item(two).latitude
                         var longit2 = tmp.rows.item(two).longitude
                         }
-                        //console.log("distance: " +getdistance(latid1, longit1, latid2, longit2))
-                        //var hitfetch = tx.executeSql('SELECT * FROM gore WHERE hole=')
-                        /*detailModel.append({ hole: tmp.rows.item(i).hole,
-                                           hit: tmp.rows.item(i).hit,
-                                           club: tmp.rows.item(i).club,
-                                           distance: getdistance(latid1, longit1, latid2, longit2)})
-                        */
+
+                        if (holetemp == tmp.rows.item(i).hole) {
+                            hittemp ++
+                        }
+                        holetemp = tmp.rows.item(i).hole
+
+
+
                         if (tmp.rows.item(i).club != "potted"){
                         detailModel.append({ hole: tmp.rows.item(i).hole,
                                            club: tmp.rows.item(i).club,
                                            distance: getdistance(latid1, longit1, latid2, longit2),
-                                           hit: 69})
+                                           hit: hittemp})
                         }
 }
                 }
     )
-    //detailModel.append({ })
 
 }
 
@@ -736,11 +689,6 @@ function getdistance(lat1, lon1, lat2, lon2) {
 }
 
 
-//id number                idnumber int
-//course name              coursename varchar
-//hole number              holenumber int
-//par                      par int
-//handicap                 hcp varchar
 
 
 // 16. gethcp
