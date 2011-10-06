@@ -26,10 +26,10 @@ Page {
     }
     }
 
-    function tumblerchanged() {
+   /* function tumblerchanged() {
         console.log("thumbler chachanged")
 
-    }
+    }*/
 
 
     function populateclubs() {
@@ -52,12 +52,12 @@ Page {
 
         else {
 
-        //console.log("saving club number " + (clbNmbrs.selectedIndex + 1) + " and name: " + clubname.text)
+        console.log("saving club number " + (clbNmbrs.selectedIndex + 1) + " and name: " + clubname.text)
 
         Funcs.writeclubs((clbNmbrs.selectedIndex +1) , clubname.text)
 
         }
-
+        populateclubs()
 
     }
 

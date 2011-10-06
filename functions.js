@@ -196,6 +196,7 @@ function writeclubs(number, club) {
                 function(tx) {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS clubs(idnumber int, club varchar)')
                     try {
+                        //THIS IS FCKED UP!! OMFG!!!
                     tx.executeSql('INSERT INTO clubs VALUES (?,?)', [ number, club ])
                     }
                     catch(e) {
@@ -210,7 +211,7 @@ function writeclubs(number, club) {
 
 function readclub(number) {
     console.log("6: Funcs.readclub("+ number + ")")
-    var clubsname = ""
+    var clubsname
     var number2
     //console.log("Club number " + number + " name requested")
     var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
@@ -231,6 +232,7 @@ function readclub(number) {
                     }
                     )
         //wtf how does this work?!?!?!?!?!?
+        console.log(number2)
         return number2
         //    console.log("no such club")
         //    return ""
@@ -241,18 +243,32 @@ function readclub(number) {
                 function(tx) {
 
 
-                        var clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
+                        var clubname = tx.executeSql('SELECT * FROM clubs WHERE idnumber=' + number)
+                        console.log("test")
+                        for (var i = 0; i < 10; i++) {
+                            console.log("test")
+                            console.log(clubname.rows.item(i).club)
+                            console.log("test")
 
+                        }
+                        console.log("test")
+                        /*
+                        console.log(clubname.rows.length)
                         if (clubname.rows.length != 0) {
-                        clubsname += clubname.rows.item(0).club
+
+
+                            clubsname = clubname.rows.item(0).club
                         }
                         //if rows length = 0, put text 'empty' as a placeholder
                         else {
-                        clubsname += "empty"
+                        clubsname = "empty"
                         }
+                        */
                 }
                     )
-    return clubsname
+        //console.log(clubsname)
+        return "empty"
+    //return clubsname
 }
 }
 
@@ -777,7 +793,7 @@ function removecourse(name) {
                     }
 
                     catch(e) {
-                        console.log("error: " +e)
+                        console.log("removecourse (19) error: " +e)
     }
 }
                 )
