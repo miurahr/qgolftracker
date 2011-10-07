@@ -17,6 +17,24 @@ Page {
 
     }
 
+    function textclicked() {
+        if (!clubname.activeFocus) {
+        clubname.openSoftwareInputPanel()
+        clubname.selectAll()
+        }
+        else {
+            clubname.closeSoftwareInputPanel()
+            clubname.focus = false
+        }
+        }
+
+
+
+    function textok() {
+        clubname.closeSoftwareInputPanel()
+        userchanged()
+    }
+
     function populatetumbler() {
 
 
@@ -26,23 +44,31 @@ Page {
     }
     }
 
-   /* function tumblerchanged() {
-        console.log("thumbler chachanged")
+   function userchanged() {
+        //property type name: valueconsole.log("thumbler chachanged")
 
-    }*/
+        //ENABLE SAVE BUTTON AGAIN!
+        savebutton.enabled = true
+
+    }
 
 
     function populateclubs() {
 
-        clublisttext.text = ""
+        clublistpart1.text = ""
+        clublistpart2.text = ""
 
-        for (var i = 1; i < 15; i++){
-            clublisttext.text +=  i + ": " + Funcs.readclub(i) + "\n"
+        for (var i = 1; i < 8; i++){
+            clublistpart1.text +=  i + ": " + Funcs.readclub(i) + "\n"
+    }
+
+        for (var j = 8; j < 15; j++){
+            clublistpart2.text +=  j + ": " + Funcs.readclub(i) + "\n"
     }
     }
 
     function save() {
-
+        savebutton.enabled = false
         clubname.closeSoftwareInputPanel()
 
         if(clubname.text == "empty") {
@@ -81,15 +107,15 @@ Page {
         id: title
         font.pointSize: 32
         anchors.top: parent.top
-        text: "Club editing dialog"
+        text: "Edit clubs"
     }
 
-    Text {
+    /*Text {
         anchors.top: title.bottom
         anchors.topMargin: 10
         font.pointSize: 16
         text: "If you want to delete club, \n enter name 'empty' and save"
-    }
+    }*/
 
     Item {
         id: tumblerstuff
@@ -98,35 +124,89 @@ Page {
         anchors.left: parent.left
         //anchors.leftMargin: 50
         anchors.top: parent.top
-        anchors.topMargin: 200
+        anchors.topMargin: 50
           Tumbler {
            id: clubtumbler
            columns: [clbNmbrs]
-           //onChanged: tumblerchanged() YAY, NOT EVEN NEEDED!!!
+           //onChanged: userchanged()
           }
 
     }
+    Rectangle {
+        id: textentry
+        color:"black"
+        width: parent.width - tumblerstuff.width
+        height: 200
+        anchors.top: tumblerstuff.top
+        anchors.left: tumblerstuff.right
 
     TextInput {
         id: clubname
-        width: parent.width - 200
-        height: 100
-        anchors.top: tumblerstuff.top
-        anchors.topMargin: 50
-        anchors.left: tumblerstuff.right
+
+        height: 50
+        anchors.topMargin: 75
+
         font.pointSize: 30
-        onAccepted:clubname.closeSoftwareInputPanel()
+        onAccepted:textok()
         //text: "Name of the course"
-        //onFocusChanged: coursename.closeSoftwareInputPanel
+        onFocusChanged: {
+            if (!clubname.activeFocus) {
+                clubname.selectAll()
+            }
+            else {
+            clubname.closeSoftwareInputPanel()
+            }
+        }
         selectByMouse: true
         cursorVisible: true
+        //onChanged: userchanged()
+        //onDataChanged: userchanged()
+        //onAccepted: userchanged()
+
+        color:"white"
 
 
         text: Funcs.readclub(clbNmbrs.selectedIndex +1)
+
+        /*MouseArea {
+            anchors.fill: parent
+            onClicked: textclicked()
+            onPressAndHold: clubname.closeSoftwareInputPanel()
+        }*/
+    }
     }
 
+    Button {
+        id: deleteclub
+        width: parent.width
+        height: 100
+        text: "Delete club"
+        anchors.top: textentry.bottom
+        anchors.topMargin: 50
+        onClicked: console.log("delete club number " + clbNmbrs.selectedIndex)
 
+    }
 
+    Text {
+        id: clublistpart1
+        width: parent.width / 2
+        height: 250
+        font.pointSize: 22
+        anchors.left: parent.left
+        anchors.top: deleteclub.bottom
+        anchors.topMargin: 30
+    }
+
+    Text {
+        id: clublistpart2
+        font.pointSize: 22
+        width: clublistpart1.width
+        height: clublistpart1.height
+        anchors.left: clublistpart1.right
+        anchors.top: clublistpart1.top
+
+    }
+/*
     Flickable {
         id: clublist
 
@@ -147,7 +227,7 @@ Page {
             //text: "here will be list of all clubs etc"
         }
     }
-
+*/
 
 
   Row {
@@ -155,12 +235,15 @@ anchors.bottom:  parent.bottom
 anchors.horizontalCenter: parent.horizontalCenter
 width: parent.width
     Button {
+            id: savebutton
             width: parent.width/2
             text: "Save"
             onClicked: save()
+            enabled: false
         }
 
         Button {
+            id: cancelbutton
             width: parent.width/2
             text: "Exit"
             onClicked:  cancel()

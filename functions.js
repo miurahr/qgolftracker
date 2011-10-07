@@ -115,7 +115,14 @@ ff.transaction(
                     dstroy.executeSql('DROP TABLE gore')
                     }
                     catch(e){
-                        console.log("destroyall (3) error: " +e)
+                        console.log("destroyall (3) drop gore error: " +e)
+                    }
+
+                    try {
+                        dstroy.executeSql('DROP TABLE clubs')
+                    }
+                    catch(e) {
+                        console.log("destroyall (3) drop clubs error: " + e)
                     }
 
                     try{
@@ -124,7 +131,7 @@ ff.transaction(
                     }
                     catch(e)
                     {
-                        console.log("destroyall (3) error: " + e)
+                        console.log("destroyall (3) drop courses error: " + e)
                     }
             }
                 )
@@ -195,12 +202,30 @@ function writeclubs(number, club) {
     cdb.transaction(
                 function(tx) {
                     tx.executeSql('CREATE TABLE IF NOT EXISTS clubs(idnumber int, club varchar)')
+                    var tmp = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
+                    console.log("rows length: " + tmp.rows.length)
+                    if (tmp.rows.length !== 0) {
+                        //not empty, must update instead of insert!
+                        //console.log("not empty")
+                        try {
+                            tx.executeSql('UPDATE clubs SET club="' + club + '" WHERE idnumber=' + number)
+                        }
+                        catch(e) {
+                            console.log('writeclubs(5) UPDATE error: ' +e)
+                        }
+
+                    }
+
+                    else {
+                        //empty, it is ok to insert!
+                        console.log("empty")
                     try {
-                        //THIS IS FCKED UP!! OMFG!!!
+
                     tx.executeSql('INSERT INTO clubs VALUES (?,?)', [ number, club ])
                     }
                     catch(e) {
-                        console.log('writeclubs (5) error: ' +e)
+                        console.log('writeclubs (5) INSERT error: ' +e)
+                    }
                     }
 }
                 )
@@ -231,43 +256,49 @@ function readclub(number) {
                         number2 = amountclbs.rows.item(0).maxid
                     }
                     )
-        //wtf how does this work?!?!?!?!?!?
+
         console.log(number2)
         return number2
-        //    console.log("no such club")
-        //    return ""
+
 }
 
         else {
     cdb1.transaction(
                 function(tx) {
-
-
-                        var clubname = tx.executeSql('SELECT * FROM clubs WHERE idnumber=' + number)
-                        console.log("test")
-                        for (var i = 0; i < 10; i++) {
-                            console.log("test")
-                            console.log(clubname.rows.item(i).club)
-                            console.log("test")
-
+                        var clubname
+                        try {
+                            clubname = tx.executeSql('SELECT club FROM clubs WHERE idnumber=' + number)
                         }
-                        console.log("test")
-                        /*
-                        console.log(clubname.rows.length)
-                        if (clubname.rows.length != 0) {
+                        catch(e) {
+                            console.log("readclub (6) read error: " + e)
+                            clubsname = "empty"
+                            console.log("does it end here?")
+                            return clubsname
+                        }
 
+                        if (clubname.rows.length !== 0) {
+
+                            //console.log("not empty")
+
+                           /* for (var i = 0; i < 50; i ++) {
+                                console.log(clubname.rows.item(i).club)
+                            }*/
+
+                            //console.log(clubname.rows.item(0).club)
 
                             clubsname = clubname.rows.item(0).club
+                            console.log(clubsname)
                         }
                         //if rows length = 0, put text 'empty' as a placeholder
                         else {
-                        clubsname = "empty"
+                            console.log("empty")
+                            clubsname = "empty"
                         }
-                        */
+
                 }
                     )
         //console.log(clubsname)
-        return "empty"
+        return clubsname
     //return clubsname
 }
 }
