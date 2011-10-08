@@ -664,12 +664,18 @@ function populatemap() {
                     var newcircle = Qt.createQmlObject(creationstring2,viewMapPage, "mapcircle");
                     map.addMapObject(newcircle)
                     */
+                    //temporary stuff trying to get polyline working...
+                    polyline.removeCoordinate(point1)
+                    polyline.removeCoordinate(point2)
+                    polyline.removeCoordinate(point3)
+
 
                     for (var i=0; i < tmp.rows.length; i++) {
                         //console.log("does this work?!?")
                         var two = i + 1
                         var latid1 = tmp.rows.item(i).latitude
                         var longit1 = tmp.rows.item(i).longitude
+                        var club = tmp.rows.item(i).club
 
                         var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
                         //console.log("creationstring: " + creationstring)
@@ -677,7 +683,10 @@ function populatemap() {
 
                         polyline.addCoordinate(coord)
 
-
+                        var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue"; font.pointSize: 16; text: "' + club + '" }'
+                        var newtext = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicText"+i)
+                        map.addMapObject(newtext)
+/*
                             //add new circle to map
                             console.log("trying to add a circle")
 
@@ -687,6 +696,8 @@ function populatemap() {
                             //var snippetname = "dynamicSnippet" + i
                             map.addMapObject(newcircle)
                             //console.log("circle dynamicSnippet" + i +" added")
+
+                            */
                         if (i==0) {
 
                             map.center = coord
