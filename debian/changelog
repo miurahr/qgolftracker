@@ -1,5 +1,5 @@
-qgolftracker (0.0.2) unstable; urgency=low
+qgolftracker (0.1.0) unstable; urgency=low
 
-  * Minor improvements.
+  * At least almost usable now.
 
- -- ossipena <>  Thu, 01 Sep 2011 15:48:41 +0000
+ -- ossipena <>  Thu, 08 Oct 2011 15:48:41 +0000

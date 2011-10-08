@@ -253,10 +253,10 @@ Page {
             height: 300
             Text {
                 id: front9
-                font.pointSize: 20
+                font.pointSize: 10
                 anchors.left: parent.left
                 anchors.top: parent.top
-                width: parent.width/2
+                width: 200
                 height: parent.height
              color:"White"
 
@@ -264,12 +264,13 @@ Page {
 
          }
             Text {
-                font.pointSize: 20
+                font.pointSize: 10
                 anchors.left: front9.right
                 anchors.top: parent.top
-                width: parent.width / 2
+                width: 200
                 height: parent.height
                 text: stats2.text
+                color:"White"
             }
         }
 
@@ -334,7 +335,7 @@ Page {
         anchors.top: parent.top
         anchors.left:  parent.left
         width:  parent.width
-        height: 100
+        height: 50
         anchors.leftMargin: parent.width / 4
 
         Text {
@@ -419,34 +420,38 @@ Page {
 
         }
 
-Column {
+Row {
     id: buttongroup
     anchors.top: clubselectionButton.bottom
-    anchors.topMargin: 10
+    anchors.topMargin: 30
     anchors.left: info.left
+    width: parent.width
 
     Button {
         id: savebutton
         text: "Hit"
-        width: clubselectionButton.width
-        height: 50
+        //width: clubselectionButton.width
+        width: 300
+        height: 100
         visible: true
         onClicked: savedata()
 
     }
     Button {
         id: holedonebutton
-        width: clubselectionButton.width
-        height: 50
-        text: "Ball in the hole"
+        //width: clubselectionButton.width
+        height: 100
+        width: clubselectionButton.width - savebutton.width
+        text: "Potted"
         onClicked: ballpotted()
         //hit count +1, hole +1 etc...
     }
 }
 
 Row {
-    anchors.top: buttongroup.bottom
-    anchors.topMargin: 10
+    id: cancelbuttons
+    anchors.bottom: parent.bottom
+    anchors.bottomMargin: 10
     anchors.left: info.left
     Button {
         id: undobutton
@@ -470,18 +475,27 @@ Row {
         //abort the whole stuff, SHOULD THIS REMOVE EVERYTHING?!?? now it leaves sql entries already written intact...
     }
 }
-    Row {
+    /*Row {
 
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 50
+        anchors.bottom: cancelbuttons.top
+        anchors.top: buttongroup.bottom
+        anchors.topMargin: 30
+        anchors.bottomMargin: 20
         anchors.left: parent.left
         anchors.leftMargin: 10
+        width: clubselectionButton.width*/
 
      Text {
          id: stats1
-         width: parent.width/2
+         width: clubselectionButton.width/2
+         //height: 200
+         anchors.bottom: cancelbuttons.top
+         anchors.top: buttongroup.bottom
+         anchors.topMargin: 30
+         anchors.bottomMargin: 30
+         anchors.left: clubselectionButton.left
          //anchors.left: parent.left
-         font.pointSize: 16
+         font.pointSize: 12
          //wrapMode:Wrap
          text: "<b>Front 9:</b>\n"
 
@@ -489,8 +503,16 @@ Row {
 
      Text {
          id: stats2
-         width: 240
-         font.pointSize: 16
+         width: clubselectionButton.width/2
+         //height: 200
+         anchors.bottom: cancelbuttons.top
+         anchors.top: buttongroup.bottom
+         anchors.topMargin: 30
+         anchors.bottomMargin: 30
+         anchors.left: stats1.right
+         //width: clubselectionButton.width/2
+         //height: parent.height
+         font.pointSize: 10
          //anchors.left: stats1.right
          //wrapMode:Wrap
          text: "<b>Back 9:</b>\n"
@@ -504,6 +526,6 @@ Row {
 
 
 
-    }
+
 
 

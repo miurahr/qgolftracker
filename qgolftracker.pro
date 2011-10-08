@@ -44,7 +44,7 @@ OTHER_FILES += \
     qml/EditClubs.qml \
     qml/DetailsPage.qml \
     qml/ViewbyclubsPage.qml \
-    qml/ViewMapPage.qml
+    qml/ViewMapPage.qml \
 
 RESOURCES += \
     res.qrc
@@ -57,6 +57,15 @@ qtcAddDeployment()
 CONFIG += qdeclarative-boostable
 QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
+
+
+
+folder_images.source = images
+folder_images.target = .
+
+DEPLOYMENTFOLDERS += folder_images
+
+
 
 
 
