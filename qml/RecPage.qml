@@ -56,8 +56,8 @@ Page {
         if (undotemp === "pot") {
             hole --
             hit = lastholehits + 1
-            //decrease hole
-            //how in heavens name I can figure out amount of hits already hit?!??!?
+
+            //THIS SHOULD ALSO REMOVE THE LINE FROM THE STATS!
         }
         if (undotemp === "hit") {
             hit --
@@ -89,10 +89,10 @@ Page {
         pardiff = pardiff + (-1 * (Funcs.readcourse("par",appWindow.course, hole) - hit))
         savedata("potted")
         if (hole < 10) {
-        stats1.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        stats1.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
         }
         else {
-        stats2.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"\n"
+        stats2.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
         }
 
         if (hole < appWindow.courseholes) {
@@ -248,12 +248,21 @@ Page {
 
         content:
          Rectangle {
+            anchors.top: sdtitle.bottom
+            anchors.topMargin: 50
+            anchors.left: recPage.left
+            anchors.right: recPage.right
+
+            //anchors.left:
+
+            x: 10
             color: "black"
-            anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.horizontalCenter: parent.horizontalCenter
+            width: parent.width
             height: 300
             Text {
                 id: front9
-                font.pointSize: 10
+                font.pointSize: 12
                 anchors.left: parent.left
                 anchors.top: parent.top
                 width: 200
@@ -264,7 +273,7 @@ Page {
 
          }
             Text {
-                font.pointSize: 10
+                font.pointSize: 12
                 anchors.left: front9.right
                 anchors.top: parent.top
                 width: 200
@@ -434,6 +443,7 @@ Row {
         width: 300
         height: 100
         visible: true
+        enabled: positionSource.position.latitudeValid
         onClicked: savedata()
 
     }
@@ -443,6 +453,7 @@ Row {
         height: 100
         width: clubselectionButton.width - savebutton.width
         text: "Potted"
+        enabled: positionSource.position.latitudeValid
         onClicked: ballpotted()
         //hit count +1, hole +1 etc...
     }
@@ -488,34 +499,34 @@ Row {
      Text {
          id: stats1
          width: clubselectionButton.width/2
-         //height: 200
+         height: 500
          anchors.bottom: cancelbuttons.top
          anchors.top: buttongroup.bottom
          anchors.topMargin: 30
          anchors.bottomMargin: 30
          anchors.left: clubselectionButton.left
          //anchors.left: parent.left
-         font.pointSize: 12
+         font.pointSize: 15
          //wrapMode:Wrap
-         text: "<b>Front 9:</b>\n"
+         textFormat: Text.RichText
+         text: "<b>Front 9:</b><br>"
 
      }
 
      Text {
          id: stats2
          width: clubselectionButton.width/2
+         //width: 200
          //height: 200
          anchors.bottom: cancelbuttons.top
          anchors.top: buttongroup.bottom
          anchors.topMargin: 30
          anchors.bottomMargin: 30
          anchors.left: stats1.right
-         //width: clubselectionButton.width/2
-         //height: parent.height
-         font.pointSize: 10
+         font.pointSize: 15
          //anchors.left: stats1.right
-         //wrapMode:Wrap
-         text: "<b>Back 9:</b>\n"
+         wrapMode:Wrap
+         text: "<b>Back 9:</b><br>"
 
 }
 
