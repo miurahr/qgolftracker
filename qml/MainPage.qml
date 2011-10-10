@@ -118,7 +118,7 @@ Page {
         spacing: 50
         //height: parent.height - 200
 
-        Text {
+        /*Text {
             //width: 350
             width: parent.width
             //anchors.horizontalCenter: settingsarea.horizontalCenter
@@ -126,7 +126,13 @@ Page {
             font.pointSize: 50
             text: "qGolfTracker"
 
+        }*/
+        Image{
+            source: "qrc:/images/logo.svg"
+            width: 400
+            height: 100
         }
+
         Text {
             //width: 400
             font.pointSize: 32

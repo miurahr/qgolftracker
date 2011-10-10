@@ -10,5 +10,8 @@
         <file>qml/ViewPage.qml</file>
         <file>qml/ViewbyclubsPage.qml</file>
         <file>qml/ViewMapPage.qml</file>
+        <file>images/flag.svg</file>
+        <file>images/logo.svg</file>
+        <file>images/tee.svg</file>
     </qresource>
 </RCC>

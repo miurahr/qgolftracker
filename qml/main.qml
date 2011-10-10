@@ -64,6 +64,16 @@ PageStackWindow {
 
     }
 
+
+    ToolBarLayout {
+        id: viewtools2
+        visible: false
+
+
+        ToolIcon { iconId: "toolbar-back"; onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml")); }
+
+    }
+
     ToolBarLayout {
         id: commonTools
         visible: true

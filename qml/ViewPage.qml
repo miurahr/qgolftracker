@@ -207,19 +207,25 @@ Page {
                 }
 
                 Column {
+
+                    Rectangle {
+                        width: 300
+                        height: 80
                     Text {
+                        anchors.top: parent.top
                         font.pointSize: 20
                         text: "Date: " + date
                     }
 
                     Text {
+                        anchors.bottom: parent.bottom
                         font.pointSize: 30
                         text: name
-
+                    }
                     MouseArea {
                         anchors.fill:  parent
                         onClicked: open(index)
-}
+                    }
                     }
                 }
 

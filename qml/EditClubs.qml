@@ -142,7 +142,7 @@ Page {
 
     TextInput {
         id: clubname
-
+        anchors.top: parent.top
         height: 50
         anchors.topMargin: 75
 

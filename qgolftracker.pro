@@ -1,5 +1,17 @@
 # Add more folders to ship with the application, here
 
+
+splashscreen.files = ./images/splash.png
+splashscreen.path = /opt/qgolftracker/images/
+INSTALLS += splashscreen
+
+
+#folder_images.source = images
+#folder_images.target = .
+
+#DEPLOYMENTFOLDERS += folder_images
+
+
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
 
@@ -25,6 +37,7 @@ symbian:TARGET.CAPABILITY += NetworkServices
 SOURCES += main.cpp
 
 
+
 OTHER_FILES += \
     qml/MainPage.qml \
     qml/main.qml \
@@ -45,6 +58,10 @@ OTHER_FILES += \
     qml/DetailsPage.qml \
     qml/ViewbyclubsPage.qml \
     qml/ViewMapPage.qml \
+    images/logo.svg \
+    images/flag.svg \
+    images/tee.svg \
+    images/splash.png
 
 RESOURCES += \
     res.qrc
@@ -60,10 +77,7 @@ QMAKE_LFLAGS += -pie -rdynamic
 
 
 
-folder_images.source = images
-folder_images.target = .
 
-DEPLOYMENTFOLDERS += folder_images
 
 
 

@@ -609,6 +609,11 @@ function populatedetails(){
                         if (holetemp == tmp.rows.item(i).hole) {
                             hittemp ++
                         }
+
+                        else {
+                            hittemp = 1
+                        }
+
                         holetemp = tmp.rows.item(i).hole
 
 
@@ -687,6 +692,10 @@ function populatemap() {
                         polyline.addCoordinate(coord)
 
                         if (tmp.rows.item(i).hole !== holetemp) {
+
+                            var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg"; offset.x:-30; offset.y:1}'
+                            var newteeimage = Qt.createQmlObject(creationstring4,viewMapPage, "dynamicteeImage"+i)
+                            map.addMapObject(newteeimage)
                             //draw teeing markers!
                         }
 
@@ -698,9 +707,10 @@ function populatemap() {
                         map.addMapObject(newtext)
                         }
                         else {
-                            var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "/opt/qgolftracker/flag.png"}'
-                            var newimage = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicImage"+i)
 
+                            var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/flag.svg"; offset.x:-30; offset.y: 2}'
+                            var newimage = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicImage"+i)
+                            map.addMapObject(newimage)
                             //draw a flag!
                         }
 
@@ -826,6 +836,7 @@ function getpar(course, numbr) {
 }
 
 // 18. removeround
+//this has problems! the list is mixed and some deletions just don't work!
 function removeround(id) {
     console.log("18: Funcs.removeround(" + id + ")")
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);

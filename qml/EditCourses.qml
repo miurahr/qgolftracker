@@ -120,6 +120,7 @@ Page {
         }
 
         tumblerwidget.visible = true
+        explanation.visible = true
 
         //what has been populated by now?!?
         //thumber except holes!!
@@ -337,13 +338,13 @@ Page {
         }
 }
         Text {
-            id: alldata
+            id: explanation
             font.pointSize: 20
             anchors.top: tumblerwidget.bottom
             anchors.left: parent.left
             width: parent.width
-            //height: 400
-            text: "JOU!"
+            height: 30
+            text: "   Hole           -        Par         -        HCP"
             visible: false
         }
 
@@ -384,6 +385,7 @@ Page {
         Button {
             id: newcourse
             height: 75
+            width: parent.width
             anchors.bottom: eraser.top
             anchors.bottomMargin: 50
             text: "Add new course"
