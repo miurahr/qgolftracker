@@ -131,6 +131,7 @@ Page {
             source: "qrc:/images/logo.svg"
             width: 400
             height: 100
+            smooth: true
         }
 
         Text {

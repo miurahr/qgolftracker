@@ -39,7 +39,7 @@ Page {
         recPage.session = Funcs.getnewsession()
         //console.log("session from funcs : " + Funcs.getnewsession())
         //session = 1
-        console.log("Session: " + recPage.session)
+        //console.log("Session: " + recPage.session)
     }
 
     function returntomain() {
@@ -52,7 +52,7 @@ Page {
     function undo() {
         console.log("This will be undoed: " + undotemp)
         undoused = true
-        //this can be either pot or hit
+        //this can be either pot or hit or pocket
         if (undotemp === "pot") {
             hole --
             hit = lastholehits + 1
@@ -64,13 +64,30 @@ Page {
             //decrease hit
         }
 
+        if (undotemp === "pocket") {
+
+            //what should be done?!?!
+            //remove last entry
+            //decrease hole number
+        }
+
 
         Funcs.removelastrow()
         // delete last row from db!
     }
 
 
+    function ballpocketed() {
+        undoused = false
+        undotemp = "pocket"
 
+        savedata("pocketed")
+        hit = Funcs.readcourse("par", appWindow.course, hole)
+        hit =+ 3
+        ballpotted()
+
+
+    }
 
     //club selection dialog
 
@@ -465,8 +482,16 @@ Row {
     anchors.bottomMargin: 10
     anchors.left: info.left
     Button {
+        id: pocketbutton
+        width: clubselectionButton.width / 3
+        height: 50
+        text: "Pocket ball"
+        onClicked: ballpocketed()
+    }
+
+    Button {
         id: undobutton
-        width: clubselectionButton.width/2
+        width: clubselectionButton.width/3
         height: 50
         text: "UNDO"
         enabled: !undoused
@@ -477,7 +502,7 @@ Row {
     Button {
         id: abortbutton
         //color: red
-        width: clubselectionButton.width/2
+        width: clubselectionButton.width/3
         height: 50
         text: "ABORT!"
         onClicked: rusuredialog.open()
@@ -525,7 +550,7 @@ Row {
          anchors.left: stats1.right
          font.pointSize: 15
          //anchors.left: stats1.right
-         wrapMode:Wrap
+         //wrapMode:Wrap
          text: "<b>Back 9:</b><br>"
 
 }
