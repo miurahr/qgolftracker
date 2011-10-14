@@ -677,7 +677,14 @@ function populatemap() {
 
                     for (var i=0; i < tmp.rows.length; i++) {
                         //console.log("does this work?!?")
+
                         var two = i + 1
+
+                        if (i == tmp.rows.length -1) {
+                            two = i
+                        }
+
+
                         var latid1 = tmp.rows.item(i).latitude
                         var longit1 = tmp.rows.item(i).longitude
                         var latid2 = tmp.rows.item(two).latitude
@@ -691,6 +698,12 @@ function populatemap() {
 
                         polyline.addCoordinate(coord)
 
+                        //add small balloon to hit position
+
+                        var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:5;z:1}'
+                        var balloon = Qt.createQmlObject(creationstring5, viewMapPage, "dynamicBalloon"+i)
+                        map.addMapObject(balloon)
+
                         if (tmp.rows.item(i).hole !== holetemp) {
 
                             var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg"; offset.x:-30; offset.y:1}'
@@ -702,7 +715,7 @@ function populatemap() {
                         holetemp = tmp.rows.item(i).hole
 
                         if (tmp.rows.item(i).club !== "potted"){
-                        var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue";offset.x: -50; offset.y: 50; font.pointSize: 16; text: "' + clubtext + '" }'
+                        var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue";offset.x: -50; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
                         var newtext = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicText"+i)
                         map.addMapObject(newtext)
                         }

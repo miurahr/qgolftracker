@@ -66,6 +66,9 @@ Page {
     }
     // 2.3 OPEN TAPPED ITEM IN MAP (MAP BUTTON IN DIALOG PRESSED)
     function inmap() {
+        //loading.visible = true
+        //loading.running = true
+        opendialog.accept()
         appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
         opendialog.accept()
     }
@@ -116,16 +119,31 @@ Page {
             }
 
             Button {
+                id: mapbutton
                 text: "Open in map"
+                //onClicked:{loading.visible = true;loading.running=true}
+                //onClicked: {loading.visible = true;inmap()}
                 onClicked: inmap()
             }
 
             Button {
                 text: "Open as list"
-                onClicked: aslist()
+                onClicked: {aslist(); loading.visible = true}
             }
+            }
+            BusyIndicator {
+                anchors.left: mapbutton.left
+                anchors.leftMargin: 50
+                anchors.top: mapbutton.top
+                id: loading
+                z:1
+                platformStyle: BusyIndicatorStyle { size: "large" }
+                running:  false
+                visible: false
 
-            }
+                           }
+
+
 
 
 
