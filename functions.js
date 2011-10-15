@@ -634,17 +634,7 @@ function populatedetails(){
 function populatemap() {
     console.log("14: Funcs.populatemap()")
 
-    /*
-      We need:
-      -hole
-      (-hit #)
-      -club
-      -distance
-      -position
-      (-date + time?)
 
-
-      */
     console.log("populating map")
     var cdb = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
 
@@ -654,22 +644,7 @@ function populatemap() {
                     var tmp = tx.executeSql('SELECT * FROM gore WHERE sessionid=' + appWindow.sessionidtemp)
 
 
-                    /*
-                      THIS IS FOR TESTING ONLY
-                    var latid1 = tmp.rows.item(2).latitude
-                    var longit1 = tmp.rows.item(2).longitude
-
-                    var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
-                    var coord = Qt.createQmlObject(creationstring, viewMapPage, "coordinate")
-
-                    map.center = coord
-
-                    //var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: { latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue"; radius:10000}'
-                    var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue"; radius:10}'
-                    var newcircle = Qt.createQmlObject(creationstring2,viewMapPage, "mapcircle");
-                    map.addMapObject(newcircle)
-                    */
-                    //temporary stuff trying to get polyline working...
+                   //trick to get polyline visible with 110% certainty.
                     polyline.removeCoordinate(point1)
                     polyline.removeCoordinate(point2)
                     polyline.removeCoordinate(point3)
@@ -682,6 +657,7 @@ function populatemap() {
 
                         if (i == tmp.rows.length -1) {
                             two = i
+                            //quick and dirty fix, when this applies, no distance is calculated so no error to values appears..
                         }
 
 
@@ -698,87 +674,51 @@ function populatemap() {
 
                         polyline.addCoordinate(coord)
 
-                        //add small balloon to hit position
-
-                        var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:5;z:1}'
-                        var balloon = Qt.createQmlObject(creationstring5, viewMapPage, "dynamicBalloon"+i)
-                        map.addMapObject(balloon)
-
-                        if (tmp.rows.item(i).hole !== holetemp) {
-
-                            var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg"; offset.x:-30; offset.y:1}'
-                            var newteeimage = Qt.createQmlObject(creationstring4,viewMapPage, "dynamicteeImage"+i)
-                            map.addMapObject(newteeimage)
-                            //draw teeing markers!
-                        }
-
-                        holetemp = tmp.rows.item(i).hole
-
-                        if (tmp.rows.item(i).club !== "potted"){
-                        var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue";offset.x: -50; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
-                        var newtext = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicText"+i)
-                        map.addMapObject(newtext)
-                        }
-                        else {
-
-                            var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/flag.svg"; offset.x:-30; offset.y: 2}'
-                            var newimage = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicImage"+i)
-                            map.addMapObject(newimage)
-                            //draw a flag!
-                        }
-
-/*
-                            //add new circle to map
-                            console.log("trying to add a circle")
-
-                            var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue"; radius:25}'
-                            //console.log("creationstring: " + creationstring)
-                            var newcircle = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicCircle"+i);
-                            //var snippetname = "dynamicSnippet" + i
-                            map.addMapObject(newcircle)
-                            //console.log("circle dynamicSnippet" + i +" added")
-
-                            */
-                        if (i==0) {
+                        if (i === 0) {
 
                             map.center = coord
                         }
-                         //Does this work at all?!?
-
-                        //console.log("adding polyline to " + latid1 + ", " + longit1)
-
-                        //polyline.addCoordinate({latitude: latid1, longitude: longit1})
-
-                        //polyline.addCoordinate("dynamic" +i)
 
 
-                        /*console.log("trying to add a circle")
-                        var newcircle = Qt.createQmlObject('import QtQuick 1.0; import QtMobility.location 1.2; MapCircle {;center: Coordinate {; latitude:' + latid1 +';longitude:' +longit1 +'};color:"blue";radius:1000;',viewMapPage, "dynamicSnippet1");
-                        viewMapPage.map.addMapObject(newcircle)
-                        console.log("circle probably added")
-
-                        */
 
 
-                        //DOES IT WORK LIKE THIS?!?
+                       if (tmp.rows.item(i).hole !== holetemp) {
 
-                        //console.log("distance: " +getdistance(latid1, longit1, latid2, longit2))
-                        //var hitfetch = tx.executeSql('SELECT * FROM gore WHERE hole=')
-                        /*detailModel.append({ hole: tmp.rows.item(i).hole,
-                                           hit: tmp.rows.item(i).hit,
-                                           club: tmp.rows.item(i).club,
-                                           distance: getdistance(latid1, longit1, latid2, longit2)})
-                        */
-                        /*if (tmp.rows.item(i).club != "potted"){
-                        detailModel.append({ hole: tmp.rows.item(i).hole,
-                                           club: tmp.rows.item(i).club,
-                                           distance: getdistance(latid1, longit1, latid2, longit2),
-                                           hit: 69})
-                        }*/
+                           var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg"; offset.x:-30; offset.y:-40}'
+                           var newteeimage = Qt.createQmlObject(creationstring,viewMapPage, "dynamicteeImage"+i)
+                           map.addMapObject(newteeimage)
+
+                            //draw teeing markers!
+                        }
+
+
+
+                        if (tmp.rows.item(i).club !== "potted"){
+                        var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue";offset.x: -100; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
+                        var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
+                        map.addMapObject(newtext)
+
+                            //add small balloon to hit position
+                            if(tmp.rows.item(i).hole === holetemp){
+                            var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:5;z:1}'
+                            var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
+                            map.addMapObject(balloon)
+                            }
+                        }
+                        else {
+
+                            var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/flag.svg"; offset.x:-20; offset.y: -40}'
+                            var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
+                            map.addMapObject(newimage)
+                            //draw a flag!
+                        }
+                        holetemp = tmp.rows.item(i).hole
+
+
+
 }
                 }
     )
-    //detailModel.append({ })
 
 }
 
@@ -964,3 +904,4 @@ function removelastround() {
                 )
 
 }
+

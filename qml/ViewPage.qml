@@ -70,7 +70,7 @@ Page {
         //loading.running = true
         opendialog.accept()
         appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
-        opendialog.accept()
+        //opendialog.accept()
     }
 
     // 2.4 OPEN TAPPED ITEM IN LISTVIEW (LIST BUTTON IN DIALOG PRESSED)
@@ -128,20 +128,10 @@ Page {
 
             Button {
                 text: "Open as list"
-                onClicked: {aslist(); loading.visible = true}
+                onClicked: aslist()
             }
             }
-            BusyIndicator {
-                anchors.left: mapbutton.left
-                anchors.leftMargin: 50
-                anchors.top: mapbutton.top
-                id: loading
-                z:1
-                platformStyle: BusyIndicatorStyle { size: "large" }
-                running:  false
-                visible: false
 
-                           }
 
 
 
