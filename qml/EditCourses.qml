@@ -73,12 +73,20 @@ Page {
 
     function del() {
 
-        //delete course
+        if (courseeditselectionButton.text == "Select course") {
+            nocourseselected.show()
+        }
 
-        appWindow.coursesinitiated = false
-    Funcs.removecourse(courseeditselection.model.get(courseeditselection.selectedIndex).name)
-        savebutton.visible = false
-        repopulatecourses()
+        else {
+
+            //delete course
+            appWindow.coursesinitiated = false
+            Funcs.removecourse(courseeditselection.model.get(courseeditselection.selectedIndex).name)
+            savebutton.visible = false
+            repopulatecourses()
+
+        }
+
 
     }
 
@@ -164,6 +172,16 @@ Page {
         addcoursedialog.accept()
     }
 
+
+    InfoBanner {
+        id: nocourseselected
+        anchors.top: parent.top
+        anchors.topMargin: 100
+        timerEnabled: true
+        timerShowTime: 5000
+        text: "You must select a course first!"
+
+    }
     Dialog {
         id: addcoursedialog
         onAccepted: createcourse(coursename.text, hleamount.value)
@@ -182,7 +200,7 @@ Page {
             TextInput {
                 id: coursename
                 color: "White"
-                height: 150
+                height: 100
                 width: 400
                 font.pointSize: 20
                 onAccepted:coursename.closeSoftwareInputPanel
@@ -192,6 +210,13 @@ Page {
                 cursorVisible: true
                 //coursename.
             }
+            Text {
+                id: advice
+                color: "White"
+                font.pointSize: 15
+                text: "Remember to press enter after <br>writing if you have automatic <br>text correction set!"
+            }
+
             //}
             Text {
                 id: explan
@@ -202,7 +227,7 @@ Page {
                 color: "White"
                 //anchors.top: coursename.bottom
                 //anchors.topMargin: 50
-                font.pointSize: 15
+                font.pointSize: 25
                 text: "Amount of holes :" + hleamount.value
             }
             Slider {

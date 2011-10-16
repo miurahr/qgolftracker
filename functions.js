@@ -231,6 +231,56 @@ function writeclubs(number, club) {
                 )
 }
 
+//5.1 deleteclub
+
+function deleteclub(number) {
+    number ++
+
+    console.log("deleting club number " + number)
+
+    var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+
+    cdb1.transaction(
+                function(tx) {
+    try{
+        //console.log("trying to remove last row")
+        tx.executeSql('DELETE FROM clubs WHERE idnumber=' +number)
+    }
+
+    catch(e) {
+        console.log("deleteclub error: " +e)
+}
+    //reorderclubs()
+    //then one should read every value for 'club' and reassign the numbers!
+}
+                )
+}
+
+function reorderclubs(){
+    //this function reorders clubs so, that there are no gaps in club numbers
+    var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+    cdb1.transaction(
+                function(tx) {
+                    var clubtmp = tx.executeSql('SELECT club FROM clubs ORDER BY idnumber')
+                    //console.log("rows length= " + clubtmp.rows.length)
+                    var newnumber = 1
+                    var amount = clubtmp.rows.length
+                    for(var i = 0; i< amount; i++) {
+
+                        //console.log("writeclubs(" + newnumber + "," + clubtmp.rows.item(i).club+")")
+                        writeclubs(newnumber,clubtmp.rows.item(i).club)
+                        newnumber ++
+                    }
+                    for(var j = amount ; j < 15; j++) {
+                        //console.log("deleting club " + i)
+                        deleteclub(j)
+                    }
+                }
+                )
+
+
+}
+
 
 //6. readclub, read club data from given number
 
@@ -271,7 +321,7 @@ function readclub(number) {
                         }
                         catch(e) {
                             console.log("readclub (6) read error: " + e)
-                            clubsname = "empty"
+                            clubsname = ""
                             console.log("does it end here?")
                             return clubsname
                         }
@@ -292,7 +342,7 @@ function readclub(number) {
                         //if rows length = 0, put text 'empty' as a placeholder
                         else {
                             console.log("empty")
-                            clubsname = "empty"
+                            clubsname = ""
                         }
 
                 }
@@ -414,9 +464,9 @@ function readcourse(action, arg1, arg2, arg3) {
         cdb2.transaction(
                     function(tx) {
                         var coursemax
-                        console.log("starting the try")
+                        //console.log("starting the try")
                         try {
-                            console.log("trying")
+                            //console.log("trying")
                             coursemax = tx.executeSql('SELECT coursename FROM courses GROUP BY coursename')
                             //console.log("rows: " + coursemax.rows.length)
                         }
@@ -448,7 +498,7 @@ function readcourse(action, arg1, arg2, arg3) {
                     function(tx) {
 
                         try {
-                            console.log("trying name")
+                            //console.log("trying name")
                             tx.executeSql('SELECT coursename FROM courses GROUP BY coursename')
                         }
                         catch(e) {
@@ -631,7 +681,7 @@ function populatedetails(){
 }
 
 // 14. populatemap
-function populatemap() {
+function populatemap(itemgroup) {
     console.log("14: Funcs.populatemap()")
 
 
@@ -648,7 +698,7 @@ function populatemap() {
                     polyline.removeCoordinate(point1)
                     polyline.removeCoordinate(point2)
                     polyline.removeCoordinate(point3)
-                    var holetemp
+                    var holetemp = ""
 
                     for (var i=0; i < tmp.rows.length; i++) {
                         //console.log("does this work?!?")
@@ -668,55 +718,88 @@ function populatemap() {
 
                         var clubtext = tmp.rows.item(i).club + " - " + Math.round(getdistance(latid1, longit1, latid2, longit2)) + "m"
 
-                        var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
-                        //console.log("creationstring: " + creationstring)
-                        var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamicCoord"+i)
+                        switch (itemgroup) {
+                        case "polyline":
+                            var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
+                            //console.log("creationstring: " + creationstring)
+                            var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamicCoord"+i)
 
-                        polyline.addCoordinate(coord)
+                            polyline.addCoordinate(coord)
 
-                        if (i === 0) {
+                            if (i === 0) {
 
-                            map.center = coord
-                        }
-
-
-
-
-                       if (tmp.rows.item(i).hole !== holetemp) {
-
-                           var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg"; offset.x:-30; offset.y:-40}'
-                           var newteeimage = Qt.createQmlObject(creationstring,viewMapPage, "dynamicteeImage"+i)
-                           map.addMapObject(newteeimage)
-
-                            //draw teeing markers!
-                        }
-
-
-
-                        if (tmp.rows.item(i).club !== "potted"){
-                        var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"blue";offset.x: -100; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
-                        var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
-                        map.addMapObject(newtext)
-
-                            //add small balloon to hit position
-                            if(tmp.rows.item(i).hole === holetemp){
-                            var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:5;z:1}'
-                            var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
-                            map.addMapObject(balloon)
+                                map.center = coord
                             }
-                        }
-                        else {
 
-                            var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/flag.svg"; offset.x:-20; offset.y: -40}'
-                            var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
-                            map.addMapObject(newimage)
-                            //draw a flag!
+                           break
+
+
+                        case "teemarker":
+
+                            if (tmp.rows.item(i).hole !== holetemp) {
+
+                                var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg";z:2; offset.x:-23; offset.y:-55}'
+                                var newteeimage = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicteeImage"+i)
+                                //console.log("Y U NOT WORK?!?!?!?")
+                                map.addMapObject(newteeimage)
+                                //console.log("does this work?!?")
+
+                                 //draw teeing markers!
+                             }
+
+                            break
+
+                        case "balloons":
+
+                            if (tmp.rows.item(i).club !== "potted"){
+                                if(tmp.rows.item(i).hole === holetemp){
+                                var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:3;z:1}'
+                                var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
+                                map.addMapObject(balloon)
+                                }
+                            }
+
+
+
+                            break
+
+
+                        case "flag":
+                            if (tmp.rows.item(i).club !== "potted"){
+                            if(tmp.rows.item(i).hole === holetemp){
+
+                            }
+                            else {
+                                var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'}z:2; source: "qrc:/images/flag.svg"; offset.x:-23; offset.y: -55}'
+                                var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
+                                map.addMapObject(newimage)
+                                //draw a flag!
+                            }
+                            }
+
+                            break
+
+                        case "text":
+
+                            if (tmp.rows.item(i).club !== "potted"){
+                                var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"#00FF66";offset.x: -100; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
+                            var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
+                            map.addMapObject(newtext)
+
+
+
+                            break
+
+
                         }
+
+
                         holetemp = tmp.rows.item(i).hole
 
 
 
 }
+                    }
                 }
     )
 

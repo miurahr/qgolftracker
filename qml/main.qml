@@ -2,11 +2,6 @@ import QtQuick 1.1
 import com.meego 1.0
 import "../functions.js" as Funcs
 
-
-//icon: from http://www.flickr.com/photos/shimazu/5108692875/sizes/m/in/photostream/
-
-//abcd
-
 PageStackWindow {
     id: appWindow
 
@@ -28,11 +23,15 @@ PageStackWindow {
 
     function courseedit() {
     coursesinitiated = false
-    onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
+    appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
 }
     function clubedit() {
     clubsinitiated = false
     onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
+    }
+
+    function openaboutscreen() {
+        appWindow.pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
     }
 
 
@@ -94,7 +93,6 @@ PageStackWindow {
         }
 
     }
-    // this should be removed after adding edit buttons to MainPage.qml
     Menu {
         id: myMenu
         visualParent: pageStack
@@ -108,11 +106,11 @@ PageStackWindow {
                 onClicked: courseedit()
 
             }
-            MenuItem {
-                text: "Delete all data!"
-                onClicked: Funcs.destroyall()
-            }
 
+            MenuItem {
+                text: "About"
+                onClicked: openaboutscreen()
+            }
     }
 }
 }

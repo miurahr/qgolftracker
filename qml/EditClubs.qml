@@ -55,15 +55,17 @@ Page {
 
     function populateclubs() {
 
+        Funcs.reorderclubs()
+
         clublistpart1.text = ""
         clublistpart2.text = ""
 
-        for (var i = 1; i < 8; i++){
-            clublistpart1.text +=  i + ": " + Funcs.readclub(i) + "\n"
+        for (var o = 1; o < 8; o++){
+            clublistpart1.text +=  o + ": " + Funcs.readclub(o) + "\n"
     }
 
-        for (var j = 8; j < 15; j++){
-            clublistpart2.text +=  j + ": " + Funcs.readclub(i) + "\n"
+        for (var p = 8; p < 15; p++){
+            clublistpart2.text +=  p + ": " + Funcs.readclub(p) + "\n"
     }
     }
 
@@ -71,18 +73,19 @@ Page {
         savebutton.enabled = false
         clubname.closeSoftwareInputPanel()
 
-        if(clubname.text == "empty") {
+        /*if(clubname.text == "empty") {
            // console.log("empty, not saving anything!")
             Funcs.removeclub((clbNmbrs.selectedIndex + 1))
-        }
+        }*/
 
-        else {
+        //else {
 
         console.log("saving club number " + (clbNmbrs.selectedIndex + 1) + " and name: " + clubname.text)
 
         Funcs.writeclubs((clbNmbrs.selectedIndex +1) , clubname.text)
 
-        }
+        //}
+
         populateclubs()
 
     }
@@ -107,6 +110,8 @@ Page {
         id: title
         font.pointSize: 32
         anchors.top: parent.top
+        anchors.horizontalCenter: parent.horizontalCenter
+        width: 200
         text: "Edit clubs"
     }
 
@@ -144,6 +149,7 @@ Page {
         id: clubname
         anchors.top: parent.top
         height: 50
+        width: 300
         anchors.topMargin: 75
 
         font.pointSize: 30
@@ -183,7 +189,7 @@ Page {
         text: "Delete club"
         anchors.top: textentry.bottom
         anchors.topMargin: 50
-        onClicked: console.log("delete club number " + clbNmbrs.selectedIndex)
+        onClicked: {Funcs.deleteclub(clbNmbrs.selectedIndex++);populateclubs()}
 
     }
 

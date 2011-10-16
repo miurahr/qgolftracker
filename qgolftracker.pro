@@ -61,7 +61,8 @@ OTHER_FILES += \
     images/logo.svg \
     images/flag.svg \
     images/tee.svg \
-    images/splash.png
+    images/splash.png \
+    qml/AboutPage.qml
 
 RESOURCES += \
     res.qrc
@@ -74,6 +75,7 @@ qtcAddDeployment()
 CONFIG += qdeclarative-boostable
 QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
+
 
 
 

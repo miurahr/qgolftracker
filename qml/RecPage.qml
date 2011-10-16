@@ -19,6 +19,7 @@ Page {
     property string session
     property string lastholehits
     property bool undoused
+    property string undolastrow
     undoused: {"false"}
 
     orientationLock: PageOrientation.LockPortrait
@@ -50,12 +51,23 @@ Page {
     }
 
     function undo() {
-        console.log("This will be undoed: " + undotemp)
+        //console.log("This will be undoed: " + undotemp)
         undoused = true
         //this can be either pot or hit or pocket
         if (undotemp === "pot") {
             hole --
-            hit = lastholehits + 1
+            hit = lastholehits ++
+
+
+            if (hole < 10) {
+            stats1.text = undolastrow
+            }
+            else {
+            stats2.text = undolastrow
+            }
+
+
+
 
             //THIS SHOULD ALSO REMOVE THE LINE FROM THE STATS!
         }
@@ -66,9 +78,16 @@ Page {
 
         if (undotemp === "pocket") {
 
-            //what should be done?!?!
-            //remove last entry
-            //decrease hole number
+            hole --
+            hit = lastholehits ++
+
+
+            if (hole < 10) {
+            stats1.text = undolastrow
+            }
+            else {
+            stats2.text = undolastrow
+            }
         }
 
 
@@ -77,15 +96,20 @@ Page {
     }
 
 
-    function ballpocketed() {
+    function ballpocketed(hits) {
         undoused = false
-        undotemp = "pocket"
+
 
         savedata("pocketed")
-        hit = Funcs.readcourse("par", appWindow.course, hole)
-        hit =+ 3
-        ballpotted()
 
+//        hit = Funcs.readcourse("par", appWindow.course, hole)
+//        hit =+ 3
+//      here should be dialog querying hits one wants to scoresheet
+        hit = hits
+        hit ++
+
+        ballpotted(false) //false because we don't want to have 2 entries: pocketed + potted
+        undotemp = "pocket"
 
     }
 
@@ -95,7 +119,7 @@ Page {
         clubselection.open()
 }
 
-    function ballpotted() {
+    function ballpotted(save) {
         //console.log("amount of hits: " + hit)
         undoused = false
         var hittemp = hit - 1
@@ -104,12 +128,16 @@ Page {
         console.log("lastholehits: " + lastholehits)
         //console.log("amount of hits now: " + hit)
         pardiff = pardiff + (-1 * (Funcs.readcourse("par",appWindow.course, hole) - hit))
+        if (save) {
         savedata("potted")
+        }
         if (hole < 10) {
-        stats1.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
+            undolastrow = stats1.text
+            stats1.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
         }
         else {
-        stats2.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
+            undolastrow = stats2.text
+            stats2.text += "Hole " + hole + ": " + hittemp + " (par: " + Funcs.readcourse("par", appWindow.course, hole) +") \t"+pardiff+"<br>"
         }
 
         if (hole < appWindow.courseholes) {
@@ -127,6 +155,8 @@ Page {
 
     function savedata(overrideclub) {
         undoused = false
+        writing.running = true
+        writing.visible = true
 
 
         if (!appWindow.clubsinitiated) {
@@ -172,7 +202,94 @@ Page {
         //console.log("Will write " +club + " " + course + " " + hole + " etc to db")
         hit +=1
         undotemp = "hit"
+        writing.running = false
+        writing.visible = false
     }
+    }
+
+    BusyIndicator {
+        id: writing
+        running: false
+        visible: false
+        z: 1
+        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.verticalCenter: parent.verticalCenter
+        platformStyle: BusyIndicatorStyle { size: "large" }
+    }
+
+    Dialog {
+        id: pocketdialog
+        onAccepted: ballpocketed(hitamount.value)
+        //onRejected: cancelled()
+        content: Item {
+            id: dialogitem
+            //height: parent.height - 150
+            height: 300
+            width: parent.width
+            anchors.topMargin: 200
+
+            Column{
+                spacing: 10
+                Text {
+                    id: title
+                    font.pointSize: 30
+                    color: "White"
+                    text: "Confirmation"
+                }
+
+            Text {
+                id: explanation
+                color: "White"
+                font.pointSize: 15
+                text: "You cannot pocket ball <br>while playing hit game, <br>when playing point game, <br>amount of hits must be<br>personal par + 2 (=0 points)"
+            }
+
+            Text {
+                id: explan
+                //anchors.top: coursename.bottom
+                //anchors.topMargin: 50
+                //width: parent.width
+                height: 25
+                color: "White"
+                //anchors.top: coursename.bottom
+                //anchors.topMargin: 50
+                font.pointSize: 25
+                text: "Hits :" + hitamount.value
+            }
+            Slider {
+                id: hitamount
+                //anchors.top:  explan.bottom
+                //anchors.topMargin: 10
+                height: 50
+                width: 300
+                //anchors.centerIn: parent.horizontalCenter
+                //anchors.top: explan.bottom
+                //anchors.bottomMargin: 50
+                minimumValue: 5
+                maximumValue:  10
+                stepSize: 1
+                valueIndicatorVisible: true
+
+            }
+
+            }
+}
+        //}
+
+        buttons: ButtonRow {
+
+            width: parent.width
+
+            Button {
+                text: "Ok"
+                onClicked: pocketdialog.accept()
+            }
+            Button {
+                text: "Cancel"
+                onClicked: pocketdialog.close()
+
+            }
+        }
     }
 
 
@@ -471,7 +588,7 @@ Row {
         width: clubselectionButton.width - savebutton.width
         text: "Potted"
         enabled: positionSource.position.latitudeValid
-        onClicked: ballpotted()
+        onClicked: ballpotted(true)
         //hit count +1, hole +1 etc...
     }
 }
@@ -486,7 +603,7 @@ Row {
         width: clubselectionButton.width / 3
         height: 50
         text: "Pocket ball"
-        onClicked: ballpocketed()
+        onClicked: pocketdialog.open()
     }
 
     Button {

@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import com.meego 1.0
-//import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 import Qt 4.7
 
@@ -58,7 +57,14 @@ Page {
             nocourseselected.show()
         }
 
+
         else{
+
+            if (Funcs.readclub("clubamount") < 1) {
+                appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
+            }
+
+            else {
 
         //console.log("selected index: " + courseselection.model.get(courseselection.selectedIndex).name)
 
@@ -67,6 +73,7 @@ Page {
         commonTools.visible = false
         appWindow.pageStack.push(Qt.resolvedUrl("RecPage.qml"))
 }
+        }
     }
 
     function checkforedit() {
