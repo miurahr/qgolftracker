@@ -1,9 +1,20 @@
 # Add more folders to ship with the application, here
 
 
-splashscreen.files = ./images/splash.png
-splashscreen.path = /opt/qgolftracker/images/
-INSTALLS += splashscreen
+#splashscreen.files = ./images/splash.png
+#splashscreen.path = /opt/qgolftracker/images/
+#INSTALLS += splashscreen
+
+
+#include(qgolftracker-backup.pro)
+#include(qgolftracker-restore.pro)
+
+#TEMPLATE = subdirs
+#SUBDIRS = qgolftracker-backup
+
+#SUBDIRS += qgolftracker-restore
+#qgolftracker-backup.depends = common
+#qgolftracker-restore.depends = common
 
 
 #folder_images.source = images
@@ -62,7 +73,9 @@ OTHER_FILES += \
     images/flag.svg \
     images/tee.svg \
     images/splash.png \
-    qml/AboutPage.qml
+    qml/AboutPage.qml \
+    qgolftracker-backup/qgolftracker-backup.pro \
+    qgolftracker-backup/qgolftracker-backup.pro
 
 RESOURCES += \
     res.qrc
@@ -71,18 +84,9 @@ RESOURCES += \
 include(deployment.pri)
 qtcAddDeployment()
 
+#TARGET =   qgolftracker
+
 # enable booster
 CONFIG += qdeclarative-boostable
 QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
-
-
-
-
-
-
-
-
-
-
-

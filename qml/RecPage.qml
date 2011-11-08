@@ -1,5 +1,6 @@
 import QtQuick 1.1
-import com.meego 1.0
+//import com.meego 1.0
+import com.nokia.meego 1.0
 import Qt 4.7
 import QtMobility.location 1.2
 import com.nokia.extras 1.0
@@ -155,8 +156,8 @@ Page {
 
     function savedata(overrideclub) {
         undoused = false
-        writing.running = true
-        writing.visible = true
+        //writing.running = true
+        //writing.visible = true
 
 
         if (!appWindow.clubsinitiated) {
@@ -202,12 +203,12 @@ Page {
         //console.log("Will write " +club + " " + course + " " + hole + " etc to db")
         hit +=1
         undotemp = "hit"
-        writing.running = false
-        writing.visible = false
+        //writing.running = false
+        //writing.visible = false
     }
     }
 
-    BusyIndicator {
+   /* BusyIndicator {
         id: writing
         running: false
         visible: false
@@ -215,7 +216,7 @@ Page {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
         platformStyle: BusyIndicatorStyle { size: "large" }
-    }
+    }*/
 
     Dialog {
         id: pocketdialog

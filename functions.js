@@ -293,6 +293,7 @@ function readclub(number) {
 
     //if number is instead string 'clubamount', function returns clubamount. used in other functions to get amount of rows in database.
     if (number == "clubamount") {
+        var numberi
         cdb1.transaction(
                     function(tx) {
                         try {
@@ -300,12 +301,35 @@ function readclub(number) {
                             }
                         catch(e) {
                             console.log(' readclub (6) error: ' +e )
-                            return
+                            numberi = 0
+                            console.log("numberi = " + numberi)
+                            return numberi
+                            //console.log('pop up club editing page somehow!')
+                            //appWindow.pageStack.mainPage.nocourseselected.text = "You have no clubs defined!"
+                            //appWindow.mainPage.nocourseselected.show()
+                            //recPage.returntomain()
+                            //appWindow.pageStack.pop(mainPage, null, false)
+                            //appWindow.pageStack.replace(Qt.resolvedUrl("EditClubs.qml"))
+                            //return "no clubs"
+                            //return 0
                         }
                         var amountclbs = tx.executeSql('SELECT MAX(idnumber) as maxid FROM clubs')
                         number2 = amountclbs.rows.item(0).maxid
+                        //console.log(number2 + " jou")
+                        if (number2 === "") {
+                            number2 = 0
+                        }
+
+                        /*if (numperi === 0) {
+                            number2 = 0
+
+                        }*/
                     }
                     )
+        //console.log(numberi)
+        if (numberi === 0) {
+            number2 = 0
+        }
 
         console.log(number2)
         return number2
@@ -736,7 +760,7 @@ function populatemap(itemgroup) {
 
                         case "teemarker":
 
-                            if (tmp.rows.item(i).hole !== holetemp) {
+                            if (tmp.rows.item(i).hole !== viewMapPage.holetemp) {
 
                                 var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg";z:2; offset.x:-23; offset.y:-55}'
                                 var newteeimage = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicteeImage"+i)
@@ -794,7 +818,7 @@ function populatemap(itemgroup) {
                         }
 
 
-                        holetemp = tmp.rows.item(i).hole
+                        viewMapPage.holetemp = tmp.rows.item(i).hole
 
 
 

@@ -5,8 +5,6 @@
 755 root root . ./opt/qgolftracker /
 755 root root . ./opt/qgolftracker/bin /
 755 root root . ./opt/qgolftracker/bin/qgolftracker debian/qgolftracker/opt/qgolftracker/bin/qgolftracker
-755 root root . ./opt/qgolftracker/images /
-644 root root . ./opt/qgolftracker/images/splash.png debian/qgolftracker/opt/qgolftracker/images/splash.png
 755 root root . ./usr /
 755 root root . ./usr/share /
 755 root root . ./usr/share/applications /

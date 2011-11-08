@@ -2,7 +2,7 @@ Package: qgolftracker
 Version: 0.5.0
 Architecture: armel
 Maintainer: unknown <>
-Installed-Size: 364
+Installed-Size: 289
 Depends: applauncherd-launcher, libc6 (>= 2.4), libgcc1 (>= 1:4.1.1), libqt4-declarative (>= 4.7.4~git20110517), libqtcore4 (>= 4.7.4~git20110517), libqtgui4 (>= 4.7.4~git20110517), libstdc++6 (>= 4.4.0)
 Section: user/other
 Priority: optional

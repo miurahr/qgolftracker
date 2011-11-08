@@ -1,5 +1,6 @@
 import QtQuick 1.0
-import com.meego 1.0
+import com.nokia.meego 1.0
+//import com.meego 1.0
 import "../functions.js" as Funcs
 
 
@@ -92,7 +93,9 @@ Page {
         height: parent.height
 
         Text {
-            font.pointSize: 20
+            font.pointSize: 30
+            anchors.left: parent.left
+            anchors.leftMargin: 50
             text: "No entries found"
         }
     }

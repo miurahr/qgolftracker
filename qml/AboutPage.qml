@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import com.meego 1.0
+import com.nokia.meego 1.0
 
 Page {
     orientationLock: PageOrientation.LockPortrait
@@ -33,7 +33,7 @@ Page {
             id: information
             font.pointSize: 15
             width: parent.width
-            text: "Written by: Timo Pelkonen (peltsip@gmail.com) <br><br>All source code available at:<br>https://www.gitorious.org/qgolftracker<br><br>I take no responsibility for anything and some legal jargon...<br><br>You have installed the package from your free will,<br> I hope you enjoy it!"
+            text: "Written by: Timo Pelkonen (peltsip@gmail.com) <br><br>All source code available at:<br>https://www.gitorious.org/qgolftracker<br><br>I take no responsibility for anything (legal part)<br><br>You have installed the package from your free will,<br> I hope you enjoy it!"
 
         }
 
