@@ -693,13 +693,20 @@ function populatedetails(){
 
 
                         if (tmp.rows.item(i).club != "potted"){
-                        detailModel.append({ hole: tmp.rows.item(i).hole,
+			    if (tmp.rows.item(i).club != "pocketed"){
+				detailModel.append({ hole: tmp.rows.item(i).hole,
                                            club: tmp.rows.item(i).club,
                                            distance: getdistance(latid1, longit1, latid2, longit2),
                                            hit: hittemp})
-                        }
+			    }
+			    else {
+				detailModel.append({ hole: tmp.rows.item(i).hole,
+					    club: tmp.rows.item(i).club,
+					    distance: "-",
+					    hit: "-"})
+			    }
 }
-                }
+		}}
     )
 
 }
@@ -743,25 +750,25 @@ function populatemap(itemgroup) {
                         var clubtext = tmp.rows.item(i).club + " - " + Math.round(getdistance(latid1, longit1, latid2, longit2)) + "m"
 
                         switch (itemgroup) {
-                        case "polyline":
-                            var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
-                            //console.log("creationstring: " + creationstring)
-                            var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamicCoord"+i)
+			    case "polyline":
+				var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
+				//console.log("creationstring: " + creationstring)
+				var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamicCoord"+i)
 
-                            polyline.addCoordinate(coord)
+				polyline.addCoordinate(coord)
 
-                            if (i === 0) {
+				if (i === 0) {
 
-                                map.center = coord
-                            }
+				    map.center = coord
+				}
 
-                           break
+			    break
 
 
-                        case "teemarker":
-
+			    case "teemarker":
+			    console.log("hole: " + tmp.rows.item(i).hole + " , holetemp: " + viewMapPage.holetemp)
                             if (tmp.rows.item(i).hole !== viewMapPage.holetemp) {
-
+				console.log("drawing teemarker")
                                 var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg";z:2; offset.x:-23; offset.y:-55}'
                                 var newteeimage = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicteeImage"+i)
                                 //console.log("Y U NOT WORK?!?!?!?")
@@ -773,7 +780,7 @@ function populatemap(itemgroup) {
 
                             break
 
-                        case "balloons":
+			    case "balloons":
 
                             if (tmp.rows.item(i).club !== "potted"){
 				if(tmp.rows.item(i).hole === viewMapPage.holetemp){
@@ -788,20 +795,24 @@ function populatemap(itemgroup) {
                             break
 
 
-                        case "flag":
-                            if (tmp.rows.item(i).club !== "potted"){
-				if(tmp.rows.item(i).hole !== viewMapPage.holetemp){
+			    case "flag":
 
-                                var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'}z:2; source: "qrc:/images/flag.svg"; offset.x:-23; offset.y: -55}'
-                                var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
-                                map.addMapObject(newimage)
-                                //draw a flag!
-                            }
+			    if (tmp.rows.item(i).club === "potted"){
+
+
+
+					console.log("drawing flag")
+
+					var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'}z:2; source: "qrc:/images/flag.svg"; offset.x:-23; offset.y: -55}'
+					var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
+					map.addMapObject(newimage)
+					//draw a flag!
+
                             }
 
                             break
 
-                        case "text":
+			    case "text":
 
                             if (tmp.rows.item(i).club !== "potted"){
 				if (tmp.rows.item(i).club !== "pocketed") {
@@ -816,18 +827,13 @@ function populatemap(itemgroup) {
                             break
 
 
-
-
-
-                        viewMapPage.holetemp = tmp.rows.item(i).hole
-
-
-
-}
+			}
+			//console.log("setting holetemp: " + tmp.rows.item(i).hole)
+		    viewMapPage.holetemp = tmp.rows.item(i).hole
+			//console.log("holetemp is: " + viewMapPage.holetemp)
                     }
                 }
     )
-
 }
 
 
