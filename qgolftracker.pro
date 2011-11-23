@@ -1,9 +1,10 @@
 # Add more folders to ship with the application, here
 
 
-#splashscreen.files = ./images/splash.png
-#splashscreen.path = /opt/qgolftracker/images/
-#INSTALLS += splashscreen
+
+splashscreen.files = ./images/splash.png
+splashscreen.path = /opt/qgolftracker/images/
+INSTALLS += splashscreen
 
 
 #include(qgolftracker-backup.pro)
@@ -75,7 +76,8 @@ OTHER_FILES += \
     images/splash.png \
     qml/AboutPage.qml \
     qgolftracker-backup/qgolftracker-backup.pro \
-    qgolftracker-backup/qgolftracker-backup.pro
+    qgolftracker-backup/qgolftracker-backup.pro \
+    qml/HelpPage.qml
 
 RESOURCES += \
     res.qrc
@@ -90,3 +92,4 @@ qtcAddDeployment()
 CONFIG += qdeclarative-boostable
 QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
+

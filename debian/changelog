@@ -1,5 +1,5 @@
-qgolftracker (0.5.0) stable; urgency=low
+qgolftracker (0.9.9) stable; urgency=low
 
-  * Everything except stats by club usable now, major bugs fixed.
+  * Every intended piece of functionality working, needs couple bugfixes before updating to 1.0.0
 
- -- ossipena <>  Thu, 08 Oct 2011 15:48:41 +0000
+ -- ossipena <>  Thu, 10 Nov 2011 15:48:41 +0000

@@ -3,18 +3,13 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 import Qt 4.7
 
-//import QtComponents 1.0
-//import QtMobility.location 1.1
-
 import "../functions.js" as Funcs
 
-///
+
 Page {
     orientationLock: PageOrientation.LockPortrait
     id: mainPage
     tools: commonTools
-    //var item1 = "Placeholder!"
-    //read club data
     property bool populated
     populated: {false}
 
@@ -54,8 +49,7 @@ Page {
 
     function updatecourse() {
         console.log("updatecourse called")
-    //item1 = Funcs.readclub(1)
-        //Funcs.readcourse("clear","","","")
+
         if (!populated) {
             console.log("not populated")
             populated = true
@@ -64,12 +58,11 @@ Page {
 
         courseselection.open()
         appWindow.coursesinitiated = true
-        //kikkihiiri()
+
 }
 
     function enterrecmode() {
         if (!appWindow.coursesinitiated) {
-            //console.log("There was an error opening course database, FCK!")
             nocourseselected.show()
         }
 
@@ -152,23 +145,9 @@ Page {
 
         id: settingsarea
         anchors.fill: parent
-        //anchors.top:  parent.top
-        //anchors.topMargin: 50
-        //anchors.
-        anchors.leftMargin: 25
+	anchors.leftMargin: 25
         spacing: 50
-        //height: parent.height - 200
-
-        /*Text {
-            //width: 350
-            width: parent.width
-            //anchors.horizontalCenter: settingsarea.horizontalCenter
-            height: 100
-            font.pointSize: 50
-            text: "qGolfTracker"
-
-        }*/
-        Image{
+	Image{
             source: "qrc:/images/logo.svg"
             width: 400
             height: 100
@@ -185,7 +164,7 @@ Page {
           id: courseselectionButton
           width: 400
           text: appWindow.coursesinitiated ? courseselection.model.get(courseselection.selectedIndex).name : "Select course"
-//appWindow.clubsinitiated ? clubselection.model.get(clubselection.selectedIndex).name : "Select club"
+
           onClicked: updatecourse()
 
       }
@@ -197,14 +176,10 @@ Page {
         id: startButton
         text: "Start!"
         width: parent.width - 50
-        //anchors.left : parent.left + 25
-        anchors.left:  parent.left
-        anchors.leftMargin: 25
-        //anchors.centerIn: mainPage.Center
-        height: parent.height / 4
-        //anchors.topMargin: 100
-        //anchors.top:settingsarea.bottom
-        anchors.bottom: parent.bottom
+	anchors.left:  parent.left
+	anchors.leftMargin: 25
+	height: parent.height / 4
+	anchors.bottom: parent.bottom
         anchors.bottomMargin: parent.height / 6
         onClicked: enterrecmode()
     }
@@ -240,5 +215,5 @@ Page {
     }
 
 
-    }
-//}
+}
+

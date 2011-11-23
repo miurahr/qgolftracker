@@ -14,5 +14,6 @@
         <file>images/logo.svg</file>
         <file>images/tee.svg</file>
         <file>qml/AboutPage.qml</file>
+        <file>qml/HelpPage.qml</file>
     </qresource>
 </RCC>

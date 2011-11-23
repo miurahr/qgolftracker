@@ -722,7 +722,7 @@ function populatemap(itemgroup) {
                     polyline.removeCoordinate(point1)
                     polyline.removeCoordinate(point2)
                     polyline.removeCoordinate(point3)
-                    var holetemp = ""
+		    //var holetemp = ""
 
                     for (var i=0; i < tmp.rows.length; i++) {
                         //console.log("does this work?!?")
@@ -766,7 +766,7 @@ function populatemap(itemgroup) {
                                 var newteeimage = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicteeImage"+i)
                                 //console.log("Y U NOT WORK?!?!?!?")
                                 map.addMapObject(newteeimage)
-                                //console.log("does this work?!?")
+
 
                                  //draw teeing markers!
                              }
@@ -776,10 +776,10 @@ function populatemap(itemgroup) {
                         case "balloons":
 
                             if (tmp.rows.item(i).club !== "potted"){
-                                if(tmp.rows.item(i).hole === holetemp){
-                                var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:3;z:1}'
-                                var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
-                                map.addMapObject(balloon)
+				if(tmp.rows.item(i).hole === viewMapPage.holetemp){
+				    var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:3;z:1}'
+				    var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
+				    map.addMapObject(balloon)
                                 }
                             }
 
@@ -790,10 +790,8 @@ function populatemap(itemgroup) {
 
                         case "flag":
                             if (tmp.rows.item(i).club !== "potted"){
-                            if(tmp.rows.item(i).hole === holetemp){
+				if(tmp.rows.item(i).hole !== viewMapPage.holetemp){
 
-                            }
-                            else {
                                 var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'}z:2; source: "qrc:/images/flag.svg"; offset.x:-23; offset.y: -55}'
                                 var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
                                 map.addMapObject(newimage)
@@ -806,16 +804,19 @@ function populatemap(itemgroup) {
                         case "text":
 
                             if (tmp.rows.item(i).club !== "potted"){
+				if (tmp.rows.item(i).club !== "pocketed") {
                                 var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"#00FF66";offset.x: -100; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
-                            var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
-                            map.addMapObject(newtext)
+				var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
+				map.addMapObject(newtext)
 
+			    }
 
+			    }
 
                             break
 
 
-                        }
+
 
 
                         viewMapPage.holetemp = tmp.rows.item(i).hole
@@ -1011,4 +1012,229 @@ function removelastround() {
                 )
 
 }
+
+
+// x. populatestatclubs, populate clubs to selectiondialog
+function populatestatclubs() {
+    console.log("x: Funcs.populatestatclubs()")
+    var max = readstatclub("clubamount")
+    max --
+    for (var i=0;i< max;i++) {
+        var clubtemp = readstatclub(i)
+
+        console.log("populating club number " + i + ": " + clubtemp)
+
+        if(clubtemp !== "potted") {
+
+
+            if (clubtemp !== "pocketed") {
+            clubstatModel.append({name:clubtemp})
+
+}
+        }
+}
+}
+
+function readstatclub(number) {
+    console.log("x: Funcs.readstatclub("+ number + ")")
+    var clubsname
+    var number2
+    //console.log("Club number " + number + " name requested")
+    var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+
+    //if number is instead string 'clubamount', function returns clubamount. used in other functions to get amount of rows in database.
+    if (number == "clubamount") {
+        var numberi
+        cdb1.transaction(
+                    function(tx) {
+                        try {
+                            //tx.executeSql('SELECT MAX(idnumber) as maxid FROM clubs')
+                            tx.executeSql('SELECT club FROM gore')
+
+                            }
+                        catch(e) {
+                            console.log(' readstatclub (x) error: ' +e )
+                            numberi = 0
+                            //console.log("numberi = " + numberi)
+                            return numberi
+                            //console.log('pop up club editing page somehow!')
+
+                        }
+                        var amountclbs = tx.executeSql('SELECT club FROM gore GROUP BY club')
+                        number2 = amountclbs.rows.length
+
+                        //console.log(number2 + " jou")
+                        if (number2 === "") {
+                            number2 = 0
+                        }
+
+                        /*if (numperi === 0) {
+                            number2 = 0
+
+                        }*/
+                    }
+                    )
+        //console.log(numberi)
+        if (numberi === 0) {
+            number2 = 0
+        }
+
+        console.log(number2)
+        return number2
+
+}
+
+        else {
+    cdb1.transaction(
+                function(tx) {
+                        var clubname
+                        try {
+                            clubname = tx.executeSql('SELECT club FROM gore GROUP BY club')
+                        }
+                        catch(e) {
+                            console.log("readclub (6) read error: " + e)
+                            clubsname = ""
+                            console.log("does it end here?")
+                            return clubsname
+                        }
+
+                        if (clubname.rows.length !== 0) {
+
+                            //console.log("not empty")
+
+                           /* for (var i = 0; i < 50; i ++) {
+                                console.log(clubname.rows.item(i).club)
+                            }*/
+
+                            //console.log(clubname.rows.item(0).club)
+
+                            clubsname = clubname.rows.item(number).club
+                            console.log(clubsname)
+                        }
+                        //if rows length = 0, put text 'empty' as a placeholder
+                        else {
+                            console.log("empty")
+                            clubsname = ""
+                        }
+
+                }
+                    )
+        //console.log(clubsname)
+        return clubsname
+    //return clubsname
+}
+}
+
+function getstatsbyclub(club) {
+
+
+
+    //averagedistance.text
+    //minimumdistance.text
+    //maximumdistance.text
+    var error = false
+
+    var cdb1 = openDatabaseSync("golftrackerDB", "1.0", "Golf Tracker complete database", 1000000);
+        cdb1.transaction(
+                    function(tx) {
+                    try {
+                        tx.executeSql('SELECT * FROM gore WHERE club="' + club + '"')
+
+                    }
+                    catch(e) {
+                        console.log("error was: " + e)
+                        error = true
+                }
+
+                    if (!error) {
+                        var dump = tx.executeSql('SELECT * FROM gore WHERE club="' + club +'"')
+                        //write amount of hits done!
+                        //appWindow.pageStack.viewbyclubsPage.
+                        amountofhits.text = dump.rows.length
+
+                        //var distance = new Array(dump.rows.length)
+			var minimum = 0
+			var maximum = 0
+                        var sum = 0
+                        for (var i = 0; i < dump.rows.length; i++) {
+			    //var two = i +1
+			    /*if (i == dump.rows.length - 1) {
+                                two = i
+			    }*/
+
+                            var latid1 = dump.rows.item(i).latitude
+
+                            var longit1 = dump.rows.item(i).longitude
+
+
+			    console.log("uid = " + dump.rows.item(i).id)
+			    //latid2 = get next id from another table!
+			    var id2 = dump.rows.item(i).id
+			    id2 ++
+
+			    console.log("id2 = " + id2)
+
+			    var nextcoord = tx.executeSql('SELECT * FROM gore WHERE id="' + id2 + '"')
+
+			    var latid2 = nextcoord.rows.item(0).latitude
+			    var longit2 = nextcoord.rows.item(0).longitude
+
+
+                            //latitude 1 longitude 1, latitude2, longitude2
+                            var distance = getdistance(latid1, longit1, latid2, longit2)
+			    console.log("distance: " + distance)
+                            //console.log("distance: " + distance)
+			    console.log("sum before: " + sum)
+			    sum += distance
+
+			    console.log("sum after: " + sum)
+
+
+                            //convert to int!!!
+
+			    if (i > 0 ) {
+
+                                if (distance < minimum) {
+                                    minimum = distance
+				    console.log("new minimum: " + minimum)
+                                }
+
+                                if (distance > maximum) {
+                                    maximum = distance
+				    console.log("new maximum: " + maximum)
+                                }
+
+                            }
+
+			    else {
+				console.log("first iteration, minimum and maximum: " +distance)
+				minimum = distance
+				maximum = distance
+
+			    }
+
+
+
+
+			}
+
+
+                        var average = sum / dump.rows.length
+                        console.log("sum: " + sum)
+                        console.log("min: " + minimum)
+                        console.log("max: " + maximum)
+                        console.log("avg: " + average)
+
+			averagedistance.text = Math.round(average)
+
+			maximumdistance.text = Math.round(maximum)
+
+			minimumdistance.text = Math.round(minimum)
+
+                    }
+                }
+                )
+
+}
+
 

@@ -33,37 +33,34 @@ Page {
 
                 Column {
                     Row {
-                    Text {
-                        font.pointSize: 25
-                        text: "Hole: "+ hole + " , hit: "
+			Text {
+			    font.pointSize: 25
+			    text: "Hole: "+ hole + " , hit: "
+			}
+
+			Text {
+			    font.pointSize: 25
+			    text: hit
+			}
 
                     }
 
-                    Text {
-                        font.pointSize: 25
-                        text: hit
-                    }
-                    }
                     Row {
-                    Text {
-                        font.pointSize: 25
-                        text: "Club: " + club + " , distance: "
+			Text {
+			    font.pointSize: 25
+			    text: "Club: " + club + " , distance: "
+			}
+
+			Text {
+			    font.pointSize: 25
+			    text: Math.round(distance) + "m"
+			}
+
                     }
-                    Text {
-                        font.pointSize: 25
-                        text: Math.round(distance) + "m"
-                    }
-                    }
+
                 }
 
-
-
-
             }
-
-
-
-
 
         }
 
@@ -74,44 +71,34 @@ Page {
             focus: true
             section.property: "hole"
             section.delegate: holedelegate
-
             delegate: delegatestuff2
-
         }
 
         Component {
             id: holedelegate
-            Item {
-            width: parent.width
-            height: 50
-            Rectangle {
-             width: parent.width
-             height: parent.height
-             color: "gray"
+	    Item {
+		width: parent.width
+		height: 50
+		Rectangle {
+		    width: parent.width
+		    height: parent.height
+		    color: "gray"
+			Text {
+			    font.pointSize: 32
+			    color: "white"
+			    text: section
+			}
 
+		}
 
-            Text {
-                font.pointSize: 32
-                color: "white"
-                text: section
-
-            }
-            }
             }
 
         }
-
 
         SectionScroller {
             listView: list2
         }
 
-
     }
 
-
-
-
-    }
-
-
+}

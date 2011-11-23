@@ -9,6 +9,8 @@ PageStackWindow {
     property string courseholes
     property bool clubsinitiated
     clubsinitiated: {false}
+    property bool clubstatinitiated
+    clubstatinitiated: {false}
     property bool coursesinitiated
     coursesinitiated: {false}
     property bool holesinitiated
@@ -22,16 +24,21 @@ PageStackWindow {
 
 
     function courseedit() {
-    coursesinitiated = false
-    appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
-}
+	coursesinitiated = false
+	appWindow.pageStack.push(Qt.resolvedUrl("EditCourses.qml"))
+    }
+
     function clubedit() {
-    clubsinitiated = false
-    onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
+	clubsinitiated = false
+	onClicked: appWindow.pageStack.push(Qt.resolvedUrl("EditClubs.qml"))
     }
 
     function openaboutscreen() {
         appWindow.pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+    }
+
+    function openhelp() {
+	appWindow.pageStack.push(Qt.resolvedUrl("HelpPage.qml"))
     }
 
 
@@ -40,7 +47,10 @@ PageStackWindow {
         visible: false
 
 
-        ToolIcon { iconId: "toolbar-back"; onClicked: appWindow.pageStack.pop(mainPage, null, false); }
+	ToolIcon {
+	    iconId: "toolbar-back"
+	    onClicked: {appWindow.clubstatinitiated = false; appWindow.pageStack.pop(mainPage, null, false); }
+	}
 
         TabButton {
             id: roundbutton
@@ -48,7 +58,7 @@ PageStackWindow {
 
             width: 120
             text: "By round"
-            onClicked: appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))
+	    onClicked: {appWindow.clubstatinitiated = false; appWindow.pageStack.push(Qt.resolvedUrl("ViewPage.qml"))}
         }
 
 
@@ -106,6 +116,11 @@ PageStackWindow {
                 onClicked: courseedit()
 
             }
+
+	    MenuItem {
+		text: "Help"
+		onClicked: openhelp()
+	    }
 
             MenuItem {
                 text: "About"

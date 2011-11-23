@@ -35,16 +35,12 @@ Page {
     function opendialog() {
 
         oldhole = 1
-
-        //open dialog
         appWindow.coursesinitiated = true
         courseeditselection.open()
     }
 
     function thumblerchanged() {
-        //reload thumbler data!
 
-        //console.log(holeNmbrs.selectedIndex)
         var name = courseeditselection.model.get(courseeditselection.selectedIndex).name
         var hole = holeNmbrs.selectedIndex
         hole ++
@@ -129,20 +125,10 @@ Page {
         }
 
         tumblerwidget.visible = true
-        explanation.visible = true
-
-        //what has been populated by now?!?
-        //thumber except holes!!
-
-        populateholes()
+	explanation.visible = true
+	populateholes()
 
         appWindow.coursesinitiated = true
-
-
-        //repopulate()
-        //populateholes()
-
-
 
 }
 
@@ -159,7 +145,7 @@ Page {
         }
         repopulatecourses()
         tumblerwidget.visible=false
-        //instead of this the dialog should be updated to the latest entry!
+
     }
 
 
@@ -206,10 +192,9 @@ Page {
                 font.pointSize: 20
                 onAccepted:coursename.closeSoftwareInputPanel
                 text: "Name of the course"
-                //onFocusChanged: coursename.closeSoftwareInputPanel
-                selectByMouse: true
+		selectByMouse: true
                 cursorVisible: true
-                //coursename.
+
             }
             Text {
                 id: advice
@@ -218,29 +203,19 @@ Page {
                 text: "Remember to press enter after <br>writing if you have automatic <br>text correction set!"
             }
 
-            //}
+
             Text {
                 id: explan
-                //anchors.top: coursename.bottom
-                //anchors.topMargin: 50
-                //width: parent.width
-                height: 25
+		height: 25
                 color: "White"
-                //anchors.top: coursename.bottom
-                //anchors.topMargin: 50
-                font.pointSize: 25
+		font.pointSize: 25
                 text: "Amount of holes :" + hleamount.value
             }
             Slider {
                 id: hleamount
-                //anchors.top:  explan.bottom
-                //anchors.topMargin: 10
-                height: 50
+		height: 50
                 width: parent.width -150
-                //anchors.centerIn: parent.horizontalCenter
-                //anchors.top: explan.bottom
-                //anchors.bottomMargin: 50
-                minimumValue: 9
+		minimumValue: 9
                 maximumValue:  18
                 stepSize: 9
                 valueIndicatorVisible: true
@@ -249,7 +224,7 @@ Page {
 
             }
 }
-        //}
+
 
         buttons: ButtonRow {
 
@@ -351,15 +326,8 @@ Page {
 
         Tumbler {
             id: edittumbler
-            //anchors.top: courseeditselectionButton.bottom
-            //anchors.centerIn: parent.centerIn
-            //anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.left: parent.left
-            //height: 100
-            //width: 400
-            columns: [holeNmbrs, parNmbrs, hcpNmbrs]
-            //columns: [holenumber, par, hcp]
-            onChanged: thumblerchanged()
+	    columns: [holeNmbrs, parNmbrs, hcpNmbrs]
+	    onChanged: thumblerchanged()
 
         }
 }
@@ -383,7 +351,7 @@ Page {
             visible: false
             height: 75
             onClicked: savedata()
-            //onClicked: console.log("now there should be save function somewhere..")
+
         }
 
         Button {
@@ -394,7 +362,7 @@ Page {
             width: parent.width
             height: 75
             onClicked: appWindow.pageStack.pop(mainPage, null, false)
-            //onClicked: console.log("now the main page open please!")
+
         }
 
         Button {

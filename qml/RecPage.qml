@@ -30,18 +30,23 @@ Page {
 
 
     function abort() {
-        Funcs.removelastround()
+	//add safety check so that this wont delete the last older entry if no hits have been saved
+	//to database in this session!
+
+	if (hole==1) {
+	    if (hit ==1) {
+
+	    }
+	}
+	Funcs.removeround(recPage.session)
+	//Funcs.removelastround()
         returntomain()
     }
 
     function pageloaded() {
         Funcs.populateclubs()
-        //Funcs.getnewsession()
+	recPage.session = Funcs.getnewsession()
 
-        recPage.session = Funcs.getnewsession()
-        //console.log("session from funcs : " + Funcs.getnewsession())
-        //session = 1
-        //console.log("Session: " + recPage.session)
     }
 
     function returntomain() {
@@ -52,10 +57,8 @@ Page {
     }
 
     function undo() {
-        //console.log("This will be undoed: " + undotemp)
-        undoused = true
-        //this can be either pot or hit or pocket
-        if (undotemp === "pot") {
+	undoused = true
+	if (undotemp === "pot") {
             hole --
             hit = lastholehits ++
 
@@ -74,8 +77,7 @@ Page {
         }
         if (undotemp === "hit") {
             hit --
-            //decrease hit
-        }
+	}
 
         if (undotemp === "pocket") {
 
@@ -93,7 +95,7 @@ Page {
 
 
         Funcs.removelastrow()
-        // delete last row from db!
+
     }
 
 
@@ -103,9 +105,7 @@ Page {
 
         savedata("pocketed")
 
-//        hit = Funcs.readcourse("par", appWindow.course, hole)
-//        hit =+ 3
-//      here should be dialog querying hits one wants to scoresheet
+
         hit = hits
         hit ++
 
@@ -114,18 +114,18 @@ Page {
 
     }
 
-    //club selection dialog
 
     function updateclub() {
         clubselection.open()
 }
 
     function ballpotted(save) {
-        //console.log("amount of hits: " + hit)
+
+	lastholehits = hit
         undoused = false
         var hittemp = hit - 1
         hit--
-        lastholehits = hit
+
         console.log("lastholehits: " + lastholehits)
         //console.log("amount of hits now: " + hit)
         pardiff = pardiff + (-1 * (Funcs.readcourse("par",appWindow.course, hole) - hit))
@@ -156,8 +156,7 @@ Page {
 
     function savedata(overrideclub) {
         undoused = false
-        //writing.running = true
-        //writing.visible = true
+
 
 
         if (!appWindow.clubsinitiated) {
@@ -197,26 +196,13 @@ Page {
         }
 
 
-        //Funcs.write(latitude, longitude, altitude, horizontalaccuracy, verticalaccuracy, date, time, club, course, hole)
-        Funcs.write(recPage.session, latitude, longitude, altitude, horizontalaccuracy, verticalaccuracy, date, time, club, course, hole)
-        //console.log("wrote session: " + session + " latitude:" + latitude +", longitude: " + longitude +", altitude: " + altitude +", horizontalacc: " + horizontalaccuracy +", verticalacc: " + verticalaccuracy +", date: " + date +", time: " + time + ", club: " + club + ", course: " + course + ", hole: " + hole)
-        //console.log("Will write " +club + " " + course + " " + hole + " etc to db")
-        hit +=1
+	Funcs.write(recPage.session, latitude, longitude, altitude, horizontalaccuracy, verticalaccuracy, date, time, club, course, hole)
+	hit +=1
         undotemp = "hit"
-        //writing.running = false
-        //writing.visible = false
+
     }
     }
 
-   /* BusyIndicator {
-        id: writing
-        running: false
-        visible: false
-        z: 1
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.verticalCenter: parent.verticalCenter
-        platformStyle: BusyIndicatorStyle { size: "large" }
-    }*/
 
     Dialog {
         id: pocketdialog
@@ -224,8 +210,7 @@ Page {
         //onRejected: cancelled()
         content: Item {
             id: dialogitem
-            //height: parent.height - 150
-            height: 300
+	    height: 300
             width: parent.width
             anchors.topMargin: 200
 
@@ -247,10 +232,7 @@ Page {
 
             Text {
                 id: explan
-                //anchors.top: coursename.bottom
-                //anchors.topMargin: 50
-                //width: parent.width
-                height: 25
+		height: 25
                 color: "White"
                 //anchors.top: coursename.bottom
                 //anchors.topMargin: 50
@@ -259,14 +241,9 @@ Page {
             }
             Slider {
                 id: hitamount
-                //anchors.top:  explan.bottom
-                //anchors.topMargin: 10
-                height: 50
+		height: 50
                 width: 300
-                //anchors.centerIn: parent.horizontalCenter
-                //anchors.top: explan.bottom
-                //anchors.bottomMargin: 50
-                minimumValue: 5
+		minimumValue: 5
                 maximumValue:  10
                 stepSize: 1
                 valueIndicatorVisible: true
@@ -275,7 +252,6 @@ Page {
 
             }
 }
-        //}
 
         buttons: ButtonRow {
 
@@ -303,10 +279,7 @@ Page {
         width: parent.width
         height: 50
         color: "red"
-        //visible: !gpsswitch.checked
-        /*Text {
-           text: "waiting for fix
-        }*/
+
     }
 
 
@@ -319,9 +292,7 @@ Page {
         height: 50
         color: "red"
         visible: !gpsswitch.checked
-        /*Text {
-           text: "waiting for fix
-        }*/
+
     }
 
     Rectangle {
@@ -362,7 +333,7 @@ Page {
         rejectButtonText: "Cancel"
         titleText: "Undo?"
         onAccepted: undo()
-        //onRejected: do not undo!
+
 
     }
 
@@ -388,11 +359,10 @@ Page {
             anchors.left: recPage.left
             anchors.right: recPage.right
 
-            //anchors.left:
 
             x: 10
             color: "black"
-            //anchors.horizontalCenter: parent.horizontalCenter
+
             width: parent.width
             height: 300
             Text {
@@ -451,19 +421,7 @@ Page {
         //active: false
         active: gpsswitch.checked
     }
-/*
-    function printableMethod(method) {
-        if (method == PositionSource.SatellitePositioningMethod)
-            return "Satellite";
-        else if (method == PositionSource.NoPositioningMethod)
-            return "Not available";
-        else if (method == PositionSouce.NonSatellitePositioningMethod)
-            return "Non-satellite";
-        else if (method == PositionSource.AllPositioningMethods)
-            return "All/multiple"
-        return "source error";
-    }
-*/
+
 
 
     InfoBanner {
@@ -503,18 +461,6 @@ Page {
          }
     }
 
-    /*Flow {
-        //LeftToRight: true
-        width: mainPage.width
-        id: buttonarea
-        anchors.fill: parent
-        //anchors.top:  positiondata.bottom
-        anchors.topMargin: 50
-        anchors.leftMargin: 25
-        //anchors.left:  parent.left
-        spacing: 20
-        //Comboboxes for selecting stuff
-        // Switch for power saving: toggle gps on/off*/
 
         Column {
             id: info
@@ -629,15 +575,7 @@ Row {
         //abort the whole stuff, SHOULD THIS REMOVE EVERYTHING?!?? now it leaves sql entries already written intact...
     }
 }
-    /*Row {
 
-        anchors.bottom: cancelbuttons.top
-        anchors.top: buttongroup.bottom
-        anchors.topMargin: 30
-        anchors.bottomMargin: 20
-        anchors.left: parent.left
-        anchors.leftMargin: 10
-        width: clubselectionButton.width*/
 
      Text {
          id: stats1
@@ -659,16 +597,14 @@ Row {
      Text {
          id: stats2
          width: clubselectionButton.width/2
-         //width: 200
-         //height: 200
+
          anchors.bottom: cancelbuttons.top
          anchors.top: buttongroup.bottom
          anchors.topMargin: 30
          anchors.bottomMargin: 30
          anchors.left: stats1.right
          font.pointSize: 15
-         //anchors.left: stats1.right
-         //wrapMode:Wrap
+
          text: "<b>Back 9:</b><br>"
 
 }

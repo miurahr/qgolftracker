@@ -26,7 +26,7 @@ Page {
         Text {
             id: version
             font.pointSize: 20
-            text: "Version: 0.5.0"
+	    text: "Version: 1.0.0"
         }
 
         Text {
