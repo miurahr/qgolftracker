@@ -1,5 +1,5 @@
-qgolftracker (0.9.9) stable; urgency=low
+qgolftracker (1.0.0) stable; urgency=low
 
-  * Every intended piece of functionality working, needs couple bugfixes before updating to 1.0.0
+  * Initial stable release.
 
- -- ossipena <>  Thu, 10 Nov 2011 15:48:41 +0000
+ -- ossipena <>  Sat, 26 Nov 2011 15:48:41 +0000

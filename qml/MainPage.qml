@@ -174,7 +174,7 @@ Page {
 
     Button {
         id: startButton
-        text: "Start!"
+	text: "Start tracking"
         width: parent.width - 50
 	anchors.left:  parent.left
 	anchors.leftMargin: 25

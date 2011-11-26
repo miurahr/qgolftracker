@@ -15,9 +15,9 @@ Changes:
  .
    * Every intended piece of functionality working, needs couple bugfixes before updating to 1.0.0
 Checksums-Sha1: 
- c77e0a9697d378f4f45485ff52d3cf42557356e8 203328 qgolftracker_0.9.9_armel.deb
+ 17d8c914eb2e174ae4e689294e7cf69988dc1e0d 204754 qgolftracker_0.9.9_armel.deb
 Checksums-Sha256: 
- dc3c00cad2ff52bd9eb0e800fae6195449ee6ab9eebcba3e9b9b9be59389a35f 203328 qgolftracker_0.9.9_armel.deb
+ 0808f3adea878c8013b4fe59d71af462d75e193fac7a571686280c155c2df2b0 204754 qgolftracker_0.9.9_armel.deb
 Files: 
- b5a4ed000f2ffe84c99fdf2ecf2ec87b 203328 user/other optional qgolftracker_0.9.9_armel.deb
+ 3c6f80165d6312738ec8974c0dd7dcad 204754 user/other optional qgolftracker_0.9.9_armel.deb
 Maemo-Display-Name: qGolfTracker

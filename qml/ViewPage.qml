@@ -28,6 +28,8 @@ Page {
     // 2.1 UPDATE EVERYTHING NEEDED AS SOON AAS PAGE HAS BEEN LOADED
 
     function update() {
+	roundbutton.visible = true
+	clubbutton.visible = true
         roundbutton.enabled = false
         clubbutton.enabled = true
         //mapbutton.enabled = true

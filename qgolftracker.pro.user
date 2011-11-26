@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by Qt Creator 2.3.1, 2011-11-23T22:07:53. -->
+<!-- Written by Qt Creator 2.3.1, 2011-11-26T18:39:50. -->
 <qtcreator>
  <data>
   <variable>ProjectExplorer.Project.ActiveTarget</variable>
@@ -304,6 +304,7 @@
       <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MaemoDeployStep</value>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedFiles">
        <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_0.5.0_armel.deb</value>
+       <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_1.0.0_armel.deb</value>
        <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_0_0_1_armel.deb</value>
        <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_0.1.0_armel.deb</value>
        <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_0.0.2_armel.deb</value>
@@ -311,6 +312,7 @@
        <value type="QString">C:/Users/timo/Documents/koodaukset/qgolftracker/qgolftracker_0.9.9_armel.deb</value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedHosts">
+       <value type="QString">192.168.100.50</value>
        <value type="QString">192.168.100.50</value>
        <value type="QString">192.168.100.50</value>
        <value type="QString">192.168.100.50</value>
@@ -325,14 +327,16 @@
        <value type="QString"></value>
        <value type="QString"></value>
        <value type="QString"></value>
+       <value type="QString"></value>
       </valuelist>
       <valuelist type="QVariantList" key="Qt4ProjectManager.MaemoRunConfiguration.LastDeployedTimes">
        <value type="QDateTime">2011-11-10T20:35:12</value>
+       <value type="QDateTime">2011-11-26T18:36:16</value>
        <value type="QDateTime">2011-09-01T19:04:28</value>
        <value type="QDateTime">2011-10-16T10:53:34</value>
        <value type="QDateTime">2011-10-08T20:38:31</value>
        <value type="QDateTime">2011-09-11T20:11:08</value>
-       <value type="QDateTime">2011-11-23T22:05:41</value>
+       <value type="QDateTime">2011-11-26T18:22:58</value>
       </valuelist>
      </valuemap>
      <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>

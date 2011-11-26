@@ -1,5 +1,5 @@
 Source: qgolftracker
-Section: user/other
+Section: user/hidden
 Priority: optional
 Maintainer: unknown <>
 Build-Depends: debhelper (>= 5), libqt4-dev
