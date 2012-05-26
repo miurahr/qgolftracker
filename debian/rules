@@ -50,7 +50,7 @@ install: build
 
 	# Add here commands to install the package into debian/qgolftracker.
 	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/qgolftracker install
-
+	install -t "$(CURDIR)"/debian/qgolftracker "$(CURDIR)"/harmattan-plugins/geoservices
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -82,7 +82,7 @@ binary-arch: build install
 #	dh_perl
 #	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps # Uncomment this line for use without Qt Creator
+	# dh_shlibdeps # Uncomment this line for use without Qt Creator
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
