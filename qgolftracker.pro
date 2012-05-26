@@ -94,4 +94,4 @@ QMAKE_CXXFLAGS += -fPIC -fvisibility=hidden -fvisibility-inlines-hidden
 QMAKE_LFLAGS += -pie -rdynamic
 
 CONFIG += qtgeoservices_osm
-QTPLUGIN += qtgeoservices_osm
+#QTPLUGIN += qtgeoservices_osm
