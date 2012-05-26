@@ -167,7 +167,7 @@ Page {
         plugin: Plugin {
             name: "openstreetmap"
             parameters: [
-                PluginParameter {name: "mapping.servers"; value: "http://tile.openstreetmap.org/"}
+                PluginParameter {name: "mapping.servers"; value: "http://a.tile.cloudmade.com/"}
             ]
         }
         anchors.fill: parent
@@ -179,11 +179,8 @@ Page {
             longitude: 40
         }
 
-        //connectivityMode: Map.HybridMode
-
-        //mapType: Map.SatelliteMapDay
-
-
+        connectivityMode: Map.HybridMode
+        mapType: Map.StreetMap
 
 
     MapMouseArea {

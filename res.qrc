@@ -15,5 +15,6 @@
         <file>images/tee.svg</file>
         <file>qml/AboutPage.qml</file>
         <file>qml/HelpPage.qml</file>
+        <file>geoservices/libqtgeoservices_osm.so</file>
     </qresource>
 </RCC>

@@ -6,6 +6,9 @@ splashscreen.files = ./images/splash.png
 splashscreen.path = /opt/qgolftracker/images/
 INSTALLS += splashscreen
 
+geoservices_osm.files = ./geoservices/libqtgeoservices_osm.so
+geoservices_osm.path = /opt/qgolftracker/geoservices/
+INSTALLS += geoservices_osm
 
 #include(qgolftracker-backup.pro)
 #include(qgolftracker-restore.pro)
@@ -77,7 +80,8 @@ OTHER_FILES += \
     qml/AboutPage.qml \
     qgolftracker-backup/qgolftracker-backup.pro \
     qgolftracker-backup/qgolftracker-backup.pro \
-    qml/HelpPage.qml
+    qml/HelpPage.qml \
+    geoservices/libqtgeoservices_osm.so
 
 RESOURCES += \
     res.qrc
