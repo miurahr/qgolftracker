@@ -50,7 +50,8 @@ install: build
 
 	# Add here commands to install the package into debian/qgolftracker.
 	$(MAKE) INSTALL_ROOT="$(CURDIR)"/debian/qgolftracker install
-	install -t "$(CURDIR)"/debian/qgolftracker "$(CURDIR)"/harmattan-plugins/geoservices
+	install -d "$(CURDIR)"/debian/qgolftracker/geoservices
+	install -t "$(CURDIR)"/debian/qgolftracker/geoservices "$(CURDIR)"/harmattan-plugins/geoservices/libqtgeoservices_osm.so
 
 # Build architecture-independent files here.
 binary-indep: build install
