@@ -26,14 +26,14 @@ Page {
         Text {
             id: version
             font.pointSize: 20
-	    text: "Version: 1.0.0"
+        text: "Version: 1.0.0-m2"
         }
 
         Text {
             id: information
             font.pointSize: 15
             width: parent.width
-            text: "Written by: Timo Pelkonen (peltsip@gmail.com) <br><br>All source code available at:<br>https://www.gitorious.org/qgolftracker<br><br>I take no responsibility for anything (legal part)<br><br>You have installed the package from your free will,<br> I hope you enjoy it!"
+            text: "Modified by: Hiroshi Miura (miurahr@linux.com)<br>Original: Timo Pelkonen (peltsip@gmail.com) <br><br>You can reach a source at:<br>https://github.com/miurahr/qgolftracker"
 
         }
 
