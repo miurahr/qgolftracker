@@ -167,7 +167,7 @@ Page {
     Map {
         id: map
         z: 1
-        plugin: Plugin { name: "nokia"}
+        plugin: Plugin { name: "osm"}
         anchors.fill: parent
         size.width: parent.width
         size.height: parent.height
@@ -177,9 +177,9 @@ Page {
             longitude: 40
         }
 
-        connectivityMode: Map.HybridMode
+        //connectivityMode: Map.HybridMode
 
-        mapType: Map.SatelliteMapDay
+        //mapType: Map.SatelliteMapDay
 
 
 
