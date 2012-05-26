@@ -95,4 +95,3 @@ QMAKE_LFLAGS += -pie -rdynamic
 
 CONFIG += qtgeoservices_osm
 QTPLUGIN += qtgeoservices_osm
-LIBS += qtgeoservices_osm
