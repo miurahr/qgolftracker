@@ -1,3 +1,15 @@
+qgolftracker (1.0.0-m2) oneiric; urgency=low
+
+  * add google plugin
+
+ -- Hiroshi Miura <miurahr@linux.com>  Sat, 26 May 2012 22:29:25 +0900
+
+qgolftracker (1.0.0-m1) oneiric; urgency=low
+
+  * OpenStreetMap as back ground map.
+
+ -- Hiroshi Miura <miurahr@linux.com>  Sat, 26 May 2012 21:13:35 +0900
+
 qgolftracker (1.0.0) stable; urgency=low
 
   * Initial stable release.

@@ -1,7 +1,7 @@
 Source: qgolftracker
 Section: user/other
 Priority: optional
-Maintainer: unknown <>
+Maintainer: Hiroshi Miura <miurahr@linux.com>
 Build-Depends: debhelper (>= 5), libqt4-dev
 Standards-Version: 3.7.3
 Homepage: <insert the upstream URL, if relevant>
