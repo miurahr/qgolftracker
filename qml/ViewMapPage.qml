@@ -167,7 +167,12 @@ Page {
         plugin: Plugin {
             name: "openstreetmap"
             parameters: [
-                PluginParameter {name: "mapping.servers"; value: "http://tile.openstreetmap.org/"}
+                PluginParameter {name: "mapping.servers";
+                    value: ["http://a.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/",
+                            "http://b.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/",
+                            "http://c.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/"
+                    ]
+                }
             ]
         }
         anchors.fill: parent
@@ -179,11 +184,8 @@ Page {
             longitude: 40
         }
 
-        //connectivityMode: Map.HybridMode
-
-        //mapType: Map.SatelliteMapDay
-
-
+        connectivityMode: Map.HybridMode
+        mapType: Map.StreetMap
 
 
     MapMouseArea {
