@@ -80,7 +80,8 @@ OTHER_FILES += \
     qgolftracker-backup/qgolftracker-backup.pro \
     qml/HelpPage.qml \
     plugins/harmattan/geoservices/libqtgeoservices_osm.so \
-    plugins/harmattan/geoservices/libqtgeoservices_google.so
+    plugins/harmattan/geoservices/libqtgeoservices_google.so \
+    README.md
 
 RESOURCES += \
     res.qrc
