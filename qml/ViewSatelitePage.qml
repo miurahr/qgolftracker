@@ -4,7 +4,7 @@ import QtMobility.location 1.2
 import "../functions.js" as Funcs
 
 Page {
-    id: viewMapPage
+    id: viewSatelitePage
     tools: viewtools2
     width: parent.width
     height: parent.height
@@ -19,14 +19,14 @@ Page {
 
     function update() {
 
-        Funcs.populatemap("polyline",viewMapPage, map)
-        map.addMapObject(polyline)
+        Funcs.populatemap("polyline",viewSatelitePage, satelite)
+        satelite.addMapObject(polyline)
         delaytimer2.start()
         //start timer 2
     }
 
     function update2() {
-        Funcs.populatemap("teemarker",viewMapPage, map)
+        Funcs.populatemap("teemarker",viewSatelitePage, satelite)
 
         delaytimer3.start()
 
@@ -35,14 +35,14 @@ Page {
 
     function update3() {
 
-        Funcs.populatemap("balloons",viewMapPage, map)
+        Funcs.populatemap("balloons",viewSatelitePage, satelite)
         delaytimer4.start()
 
     }
 
     function update4() {
 
-        Funcs.populatemap("flag",viewMapPage, map)
+        Funcs.populatemap("flag",viewSatelitePage, satelite)
 //do something
 
         delaytimer5.start()
@@ -50,7 +50,7 @@ Page {
     }
 
     function update5() {
-        Funcs.populatemap("text",viewMapPage, map)
+        Funcs.populatemap("text",viewSatelitePage, satelite)
         //do something
         busyrectangle.visible = false
         loading.visible = false
@@ -135,7 +135,7 @@ Page {
         height: 80
         text: "-"
 
-        onClicked: map.zoomLevel --
+        onClicked: satelite.zoomLevel --
 
     }
 
@@ -148,7 +148,7 @@ Page {
         width: 80
         height: 80
         text: "+"
-        onClicked: map.zoomLevel ++
+        onClicked: satelite.zoomLevel ++
     }
 
 
@@ -162,18 +162,10 @@ Page {
 
 
     Map {
-        id: map
+        id: satelite
         z: 1
         plugin: Plugin {
-            name: "openstreetmap"
-            parameters: [
-                PluginParameter {name: "mapping.servers";
-                    value: ["http://a.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/",
-                            "http://b.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/",
-                            "http://c.tile.cloudmade.com/f3f2cbe6a0c34bf8981a5be8426333a8/63596/256/"
-                    ]
-                }
-            ]
+            name: "nokia"
         }
         anchors.fill: parent
         size.width: parent.width
@@ -185,7 +177,7 @@ Page {
         }
 
         connectivityMode: Map.HybridMode
-        mapType: Map.StreetMap
+        mapType: Map.SatelliteMapDay
 
 
     MapMouseArea {
@@ -206,15 +198,15 @@ Page {
                         if ((lastX != -1) && (lastY != -1)) {
                             var dx = mouse.x - lastX
                             var dy = mouse.y - lastY
-                            map.pan(-dx, -dy)
+                            satelite.pan(-dx, -dy)
                         }
                         lastX = mouse.x
                         lastY = mouse.y
                     }
                 }
                 onDoubleClicked: {
-                    map.center = mouse.coordinate
-                    map.zoomLevel += 1
+                    satelite.center = mouse.coordinate
+                    satelite.zoomLevel += 1
                     lastX = -1
                     lastY = -1
                 }
@@ -258,15 +250,6 @@ Page {
                 longitude: 153.4
             }
 
-        //now just use the script file to insert coordinates such as:
-        // viewMapPage.polyline.addCoordinate( Coordinate )
-        //yeah!
-
     }
-
-    /*MapImage {
-        coordinate: Coordinate{ latitude: 62.2513061; longitude:25.70465563 } source: "./flag.png"
-    }*/
-
 
 }

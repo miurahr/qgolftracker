@@ -712,7 +712,7 @@ function populatedetails(){
 }
 
 // 14. populatemap
-function populatemap(itemgroup) {
+function populatemap(itemgroup, basePage, baseMap) {
     console.log("14: Funcs.populatemap()")
 
 
@@ -753,26 +753,26 @@ function populatemap(itemgroup) {
 			    case "polyline":
 				var creationstring = 'import QtMobility.location 1.1;Coordinate { latitude:'+ latid1 +'; longitude:' +longit1 + ' ;}'
 				//console.log("creationstring: " + creationstring)
-				var coord = Qt.createQmlObject(creationstring, viewMapPage, "dynamicCoord"+i)
+                var coord = Qt.createQmlObject(creationstring, basePage, "dynamicCoord"+i)
 
 				polyline.addCoordinate(coord)
 
 				if (i === 0) {
 
-				    map.center = coord
+                    baseMap.center = coord
 				}
 
 			    break
 
 
 			    case "teemarker":
-			    console.log("hole: " + tmp.rows.item(i).hole + " , holetemp: " + viewMapPage.holetemp)
-                            if (tmp.rows.item(i).hole !== viewMapPage.holetemp) {
+                console.log("hole: " + tmp.rows.item(i).hole + " , holetemp: " + basePage.holetemp)
+                            if (tmp.rows.item(i).hole !== basePage.holetemp) {
 				console.log("drawing teemarker")
                                 var creationstring2 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} source: "qrc:/images/tee.svg";z:2; offset.x:-23; offset.y:-55}'
-                                var newteeimage = Qt.createQmlObject(creationstring2,viewMapPage, "dynamicteeImage"+i)
+                                var newteeimage = Qt.createQmlObject(creationstring2, basePage, "dynamicteeImage"+i)
                                 //console.log("Y U NOT WORK?!?!?!?")
-                                map.addMapObject(newteeimage)
+                                baseMap.addMapObject(newteeimage)
 
 
                                  //draw teeing markers!
@@ -783,10 +783,10 @@ function populatemap(itemgroup) {
 			    case "balloons":
 
                             if (tmp.rows.item(i).club !== "potted"){
-				if(tmp.rows.item(i).hole === viewMapPage.holetemp){
+                if(tmp.rows.item(i).hole === basePage.holetemp){
 				    var creationstring4 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapCircle { center: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"white"; radius:3;z:1}'
-				    var balloon = Qt.createQmlObject(creationstring4, viewMapPage, "dynamicBalloon"+i)
-				    map.addMapObject(balloon)
+                    var balloon = Qt.createQmlObject(creationstring4, basePage, "dynamicBalloon"+i)
+                    baseMap.addMapObject(balloon)
                                 }
                             }
 
@@ -804,8 +804,8 @@ function populatemap(itemgroup) {
 					console.log("drawing flag")
 
 					var creationstring5 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapImage { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'}z:2; source: "qrc:/images/flag.svg"; offset.x:-23; offset.y: -55}'
-					var newimage = Qt.createQmlObject(creationstring5,viewMapPage, "dynamicImage"+i)
-					map.addMapObject(newimage)
+                    var newimage = Qt.createQmlObject(creationstring5, basePage, "dynamicImage"+i)
+                    baseMap.addMapObject(newimage)
 					//draw a flag!
 
                             }
@@ -817,8 +817,8 @@ function populatemap(itemgroup) {
                             if (tmp.rows.item(i).club !== "potted"){
 				if (tmp.rows.item(i).club !== "pocketed") {
                                 var creationstring3 = 'import QtQuick 1.0; import QtMobility.location 1.2; MapText { coordinate: Coordinate{ latitude: ' + latid1 +'; longitude:' + longit1 +'} color:"#00FF66";offset.x: -100; offset.y: 0; font.pointSize: 16; text: "' + clubtext + '" }'
-				var newtext = Qt.createQmlObject(creationstring3,viewMapPage, "dynamicText"+i)
-				map.addMapObject(newtext)
+                var newtext = Qt.createQmlObject(creationstring3, basePage, "dynamicText"+i)
+                baseMap.addMapObject(newtext)
 
 			    }
 
@@ -829,8 +829,8 @@ function populatemap(itemgroup) {
 
 			}
 			//console.log("setting holetemp: " + tmp.rows.item(i).hole)
-		    viewMapPage.holetemp = tmp.rows.item(i).hole
-			//console.log("holetemp is: " + viewMapPage.holetemp)
+            basePage.holetemp = tmp.rows.item(i).hole
+            //console.log("holetemp is: " + basePage.holetemp)
                     }
                 }
     )

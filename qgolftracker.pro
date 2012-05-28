@@ -81,7 +81,8 @@ OTHER_FILES += \
     qml/HelpPage.qml \
     plugins/harmattan/geoservices/libqtgeoservices_osm.so \
     plugins/harmattan/geoservices/libqtgeoservices_google.so \
-    README.md
+    README.md \
+    qml/ViewSatelitePage.qml
 
 RESOURCES += \
     res.qrc

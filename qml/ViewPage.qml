@@ -69,11 +69,13 @@ Page {
     }
     // 2.3 OPEN TAPPED ITEM IN MAP (MAP BUTTON IN DIALOG PRESSED)
     function inmap() {
-        //loading.visible = true
-        //loading.running = true
         opendialog.accept()
         appWindow.pageStack.push(Qt.resolvedUrl("ViewMapPage.qml"))
-        //opendialog.accept()
+    }
+
+    function insatelite() {
+        opendialog.accept()
+        appWindow.pageStack.push(Qt.resolvedUrl("ViewSatelitePage.qml"))
     }
 
     // 2.4 OPEN TAPPED ITEM IN LISTVIEW (LIST BUTTON IN DIALOG PRESSED)
@@ -95,9 +97,11 @@ Page {
         height: parent.height
 
         Text {
+            x: 25
+            y: 80
             font.pointSize: 30
             anchors.left: parent.left
-            anchors.leftMargin: 50
+            anchors.leftMargin: 27
             text: "No entries found"
         }
     }
@@ -121,6 +125,12 @@ Page {
                 font.pointSize: 20
                 color:"white"
                 text: "How you want to view stats?"
+            }
+
+            Button {
+                id: satelitebutton
+                text: "Open in Satelite"
+                onClicked: insatelite()
             }
 
             Button {
@@ -186,9 +196,10 @@ Page {
 
 
             Text {
-                font.pointSize: 32
+                font.pointSize: 24
                 color: "white"
                 text: section
+                font.family: "Ubuntu"
 
             }
             }
